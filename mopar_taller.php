@@ -31,7 +31,7 @@ function taller_modelos_func(){
 
 function taller_vehiculos_func(){
     $vehiculos = Mopar::getVehiculos();
-	$clientes = Mopar::getClientes();
+	$clientes = Mopar::getClientes(['field' => 'id', 'type' => 'DESC']);
 	$modelos = Mopar::getModelos();
 	
 	include('views/vehiculos.php');	
@@ -488,10 +488,9 @@ class Mopar{
     	return $modelos;
 	}
 
-	public static function getClientes(){
+	public static function getClientes($sorting = ['field' => 'apellidoPaterno', 'type' => 'ASC']){
 		global $wpdb;
-    	$clientes = $wpdb->get_results('SELECT * FROM clientes ORDER BY apellidoPaterno ASC');
-
+		$clientes = $wpdb->get_results("SELECT * FROM clientes ORDER BY {$sorting['field']} {$sorting['type']}");
     	return $clientes;
 	}
 
