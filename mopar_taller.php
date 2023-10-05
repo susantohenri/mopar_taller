@@ -508,11 +508,11 @@ class Mopar{
 	public static function getSelect2Clientes(){
 		global $wpdb;
 		$clientes = $wpdb->get_results("
-			SELECT id, CONCAT(apellidoPaterno, ' ', apellidoMaterno, ' ', nombres) text
+			SELECT id, CONCAT(nombres, ' ', apellidoPaterno, ' ', apellidoMaterno) text
 			FROM clientes
 			WHERE CONCAT(apellidoPaterno, ' ', apellidoMaterno, ' ', nombres) LIKE '%{$_GET['q']}%'
 			ORDER BY id DESC
-			LIMIT 5
+			LIMIT 10
 		");
 		return ['results' => $clientes];
 	}
