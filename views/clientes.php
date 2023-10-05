@@ -82,7 +82,7 @@ else:
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Apellido Materno</span>
 						        </div>
-						        <input type="text" name="apellidoMaterno" class="form-control" required>
+						        <input type="text" name="apellidoMaterno" class="form-control">
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
