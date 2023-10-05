@@ -409,7 +409,7 @@ $(document).ready(function(){
     	})
 	});
 
-	$('#tabla_vehiculos').DataTable();
+	$('#tabla_vehiculos').DataTable({order: [[0, 'desc']]});
 
 })
 
