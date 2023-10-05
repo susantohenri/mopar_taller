@@ -110,6 +110,7 @@ if (user_can( $current_user, 'administrator' )) {
 		}
 
 		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
+		$lastupdated = is_null($ot->upddate) ? '-' : date_format(date_create($ot->upddate), 'd/m/Y - H:i');
 
 		$html .= '
 		<tr>
@@ -129,7 +130,7 @@ if (user_can( $current_user, 'administrator' )) {
 			<td>
 				<strong>Creado:</strong> '.date_format(date_create($ot->regdate), 'd/m/Y - H:i').'
 				<br>
-				<strong>Modificado:</strong> -
+				<strong>Modificado:</strong> '. $lastupdated .'
 			</td>
 		</tr>
 	</table>
