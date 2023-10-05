@@ -131,9 +131,6 @@ if( $_POST ){
 						        </div>
 						        <select name="cliente" class="form-control">
 						        	<option value="">Seleccione</option>
-						        	<?php foreach ($clientes as $cliente) { ?>
-						        	<option value="<?php echo $cliente->id ?>"><?php echo $cliente->apellidoPaterno ?> <?php echo $cliente->apellidoMaterno ?> <?php echo $cliente->nombres ?></option>
-						        	<?php } ?>
 						        </select>
 					      	</div>
 				    	</div>
@@ -267,9 +264,6 @@ if( $_POST ){
 						        </div>
 						        <select name="cliente" class="form-control">
 						        	<option value="">Seleccione</option>
-						        	<?php foreach ($clientes as $cliente) { ?>
-						        	<option value="<?php echo $cliente->id ?>"><?php echo $cliente->apellidoPaterno ?> <?php echo $cliente->apellidoMaterno ?> <?php echo $cliente->nombres ?></option>
-						        	<?php } ?>
 						        </select>
 					      	</div>
 				    	</div>
@@ -380,10 +374,19 @@ if( $_POST ){
 
 
 
-
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 
 $(document).ready(function(){
+	$(`[name="cliente"]`).css(`display`, `none`).select2({
+		theme: `bootstrap4`,
+		minimumInputLength: 3,
+		ajax: {
+			url: `../wp-json/mopar-taller/v1/clientes`
+		}
+	})
 
 	$(document).on('click','.btnQuitarArchivo', function(e){
 		e.preventDefault();
@@ -407,7 +410,8 @@ $(document).ready(function(){
 
     			$(".overlay").hide();
     			$('#modalEditOT [name=ot_id]').val(json.ot.id);
-    			$('#modalEditOT [name=cliente]').val(json.ot.cliente_id);
+
+				$('#modalEditOT [name=cliente]').html(`<option value="${json.ot.cliente_id}" selected>${json.cliente.apellidoPaterno} ${json.cliente.apellidoMaterno} ${json.cliente.nombres}</option>`)
 
     			$('[name=vehiculo]').empty();
 				$('[name=vehiculo]').append(new Option('Seleccione Vehiculo', ''));

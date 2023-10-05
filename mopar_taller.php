@@ -411,11 +411,13 @@ function get_ot_callback(){
 	$ot = Mopar::getOneOt($ot_id);
 
 	$vehiculos = Mopar::getVehiculosByCliente($ot->cliente_id);
+	$cliente = Mopar::getOneCliente($ot->cliente_id);
 
 	$json = [
 		'ot' => $ot,
 		'vehiculos' => $vehiculos,
-		'detalle' => json_decode($ot->detalle)
+		'detalle' => json_decode($ot->detalle),
+		'cliente' => $cliente
 	];
 
 	echo json_encode($json);
@@ -452,6 +454,15 @@ function get_modelo_callback(){
 	exit();  
 }
 
+function mopar_taller_select2_clientes () {
+	register_rest_route('mopar-taller/v1', '/clientes', [
+        'methods' => 'GET',
+        'permission_callback' => '__return_true',
+        'callback' => function () {
+			return Mopar::getSelect2Clientes();
+		}
+	]);
+}
 
 //Clientes
 add_action('wp_ajax_insertar_cliente','insertar_cliente_callback');
@@ -477,7 +488,7 @@ add_action( 'wp_ajax_nopriv_md_support_save','editar_ot' );
 add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
 add_action('wp_ajax_get_vehiculos_by_cliente','get_vehiculos_by_cliente_callback');
 add_action('wp_ajax_get_ot','get_ot_callback');
-
+add_action('rest_api_init', 'mopar_taller_select2_clientes');
 
 class Mopar{
 
@@ -492,6 +503,18 @@ class Mopar{
 		global $wpdb;
 		$clientes = $wpdb->get_results("SELECT * FROM clientes ORDER BY {$sorting['field']} {$sorting['type']}");
     	return $clientes;
+	}
+
+	public static function getSelect2Clientes(){
+		global $wpdb;
+		$clientes = $wpdb->get_results("
+			SELECT id, CONCAT(apellidoPaterno, ' ', apellidoMaterno, ' ', nombres) text
+			FROM clientes
+			WHERE CONCAT(apellidoPaterno, ' ', apellidoMaterno, ' ', nombres) LIKE '%{$_GET['q']}%'
+			ORDER BY id DESC
+			LIMIT 5
+		");
+		return ['results' => $clientes];
 	}
 
 	public static function getOneCliente($cliente_id){
