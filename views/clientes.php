@@ -369,7 +369,7 @@ $(document).ready(function(){
 		$(this).val( formateaRut($(this).val() ) );
 	});
 
-    $('#tabla_clientes').DataTable();
+    $('#tabla_clientes').DataTable({order: [[0, 'desc']]});
 });
 
 
