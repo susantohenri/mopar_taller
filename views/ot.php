@@ -441,7 +441,11 @@ $(document).ready(function(){
 					h += '	<td>';
 					h += '		<input type="text" value="'+detalle.precio[k]+'" name="detalle[precio][]" class="form-control precio text-right" value="0" required>';
 					h += '	</td>';
-					h += '	<td><a href="#" data-toggle="tooltip" title="Borra Linea" class="btn btn-danger btn-sm btnLess"><i class="fa fa-minus"></i></a></td>';
+					h += `	<td>
+								<a href="#" data-toggle="tooltip" title="Borra Linea" class="btn btn-danger btn-sm btnLess"><i class="fa fa-minus"></i></a>
+								<a href="#" class="btn btn-info btn-sm btnUp"><i class="fa fa-arrow-up"></i></a>
+								<a href="#" class="btn btn-info btn-sm btnDown"><i class="fa fa-arrow-down"></i></a>
+							</td>`;
 					h += '</tr>';
 					$("#modalEditOT table tbody").append(h);
 					$("[data-toggle=tooltip]").tooltip();
@@ -478,6 +482,18 @@ $(document).ready(function(){
 		recalcular();
 	})
 
+	$(document).on('click','.btnUp',function(e){
+		e.preventDefault();
+		tr = $(this).closest('tr');
+		tr.insertBefore(tr.prev())
+	})
+
+	$(document).on('click','.btnDown',function(e){
+		e.preventDefault();
+		tr = $(this).closest('tr');
+		tr.insertAfter(tr.next())
+	})
+
 	$(".btnPlus").click(function(e){
 		e.preventDefault();
 		h = '';
@@ -488,7 +504,11 @@ $(document).ready(function(){
 		h += '	<td>';
 		h += '		<input type="text" name="detalle[precio][]" class="form-control precio text-right" value="0" required>';
 		h += '	</td>';
-		h += '	<td><a href="#" data-toggle="tooltip" title="Borra Linea" class="btn btn-danger btn-sm btnLess"><i class="fa fa-minus"></i></a></td>';
+		h += `	<td>
+					<a href="#" data-toggle="tooltip" title="Borra Linea" class="btn btn-danger btn-sm btnLess"><i class="fa fa-minus"></i></a>
+					<a href="#" class="btn btn-info btn-sm btnUp"><i class="fa fa-arrow-up"></i></a>
+					<a href="#" class="btn btn-info btn-sm btnDown"><i class="fa fa-arrow-down"></i></a>
+				</td>`;
 		h += '</tr>';
 		$(this).closest('.modal').find('table tbody').append(h)
 		$("[data-toggle=tooltip]").tooltip();
