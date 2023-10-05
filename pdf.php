@@ -109,6 +109,8 @@ if (user_can( $current_user, 'administrator' )) {
 			</tr>';
 		}
 
+		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
+
 		$html .= '
 		<tr>
 			<td style="text-align: right;"><strong>TOTAL</strong></td>
@@ -120,8 +122,14 @@ if (user_can( $current_user, 'administrator' )) {
 		<tr>
 			<td>
 				<strong>Kilometraje: ' . $ot->km . '</strong><br>
-				<strong>Observaciones adicionales: </strong> <br> 
-				' . nl2br($ot->observaciones) . '
+				'.$observaciones.'
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong>Creado:</strong> '.date_format(date_create($ot->regdate), 'd/m/Y - H:i').'
+				<br>
+				<strong>Modificado:</strong> -
 			</td>
 		</tr>
 	</table>
