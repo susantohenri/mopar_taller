@@ -52,6 +52,13 @@ if( $_POST ){
 	}
 
 	if( $_POST['action'] == 'editar_ot' ){
+		$before_update = (array) Mopar::getOneOt($_POST['ot_id']);
+		$posted_attr = array_keys($array_insert);
+		$before_update = array_filter($before_update, function ($value, $attr) use ($posted_attr) {
+			return in_array($attr, $posted_attr);
+		}, ARRAY_FILTER_USE_BOTH);
+		if ($before_update !== $array_insert) $array_insert['upddate'] = date('Y-m-d H:i:s');
+
 		if( $wpdb->update('ot',$array_insert,['id' => $_POST['ot_id']]) ){
 			$updated = true;
 		}
