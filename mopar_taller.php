@@ -570,7 +570,7 @@ class Mopar{
 
 	public static function getCotizaciones(){
 		global $wpdb;
-    	$ots = $wpdb->get_results('SELECT * FROM ot WHERE estado = 1 ORDER BY id DESC');
+    	$ots = $wpdb->get_results('SELECT * FROM ot WHERE estado IN (1, 2) ORDER BY id DESC');
 
     	return $ots;
 	}
