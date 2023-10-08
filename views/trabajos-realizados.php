@@ -562,7 +562,7 @@ $(document).ready(function(){
 		            		type: 'POST',
 		            		url: '<?php echo admin_url('admin-ajax.php'); ?>',
 		            		dataType: 'json',
-		            		data: 'action=eliminar_ot&regid=' + regid,
+							data: 'action=uncompletar_ot&regid=' + regid,
 		            		beforeSend: function(){
 		            		},
 		            		success: function(json){
