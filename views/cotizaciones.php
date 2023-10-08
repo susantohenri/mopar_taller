@@ -643,7 +643,7 @@ $(document).ready(function(){
     <?php } ?>
 
     <?php if( $inserted || $updated ){ ?>
-	location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=mopar-ot';
+	location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=mopar-cotizaciones';
     <?php } ?>
 
 
