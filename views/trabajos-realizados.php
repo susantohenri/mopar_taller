@@ -73,8 +73,7 @@ if( $_POST ){
 
 <div class="box pr-4">
 	<div class="box-header mb-4">
-		<h2 class="font-weight-light text-center text-muted float-left"> Lista de Trabajos Terminados </h2>
-		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modalNewOT">Nueva OT</button>
+		<h2 class="font-weight-light text-center text-muted float-left"> Lista de Trabajos Realizados </h2>
 
 		<div class="clearfix"></div>
 	</div>
@@ -88,7 +87,6 @@ if( $_POST ){
 					<th> Vehiculo </th>
 					<th> Valor Total </th>
 					<th> Km. </th>
-					<th> Estado </th>
 					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
@@ -101,7 +99,6 @@ if( $_POST ){
 					<td data-vehiculo="<?php echo $ot->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($ot->vehiculo_id) ?> </td>
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
-					<td data-estado="<?php echo $ot->estado; ?>"> <?php echo Mopar::getEstado($ot->estado); ?> </td>
 					<td class="text-center" style="white-space: nowrap;">
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar OT"><i class="fa fa-pencil"></i></button>
 						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver OT"><i class="fa fa-search"></i></a>
@@ -371,7 +368,6 @@ if( $_POST ){
       			</div>
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
-	        		<button type="submit" class="btn btn-success btnGuardar">Guardar <i class="fa fa-save"></i> </button>
 	      		</div>
 			</div>
 	  	</div>

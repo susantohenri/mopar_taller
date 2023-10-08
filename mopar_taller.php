@@ -13,9 +13,9 @@ function theme_options_panel(){
 	add_submenu_page( 'mopar-taller', 'Modelos', 'Modelos', 'manage_options', 'mopar-modelos', 'taller_modelos_func');
 	add_submenu_page( 'mopar-taller', 'Clientes', 'Clientes', 'manage_options', 'mopar-clientes', 'taller_clientes_func');
 	add_submenu_page( 'mopar-taller', 'Vehiculos', 'Vehiculos', 'manage_options', 'mopar-vehiculos', 'taller_vehiculos_func');
-	add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');// henrisusanto: delete
+	// add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');
 	add_submenu_page( 'mopar-taller', 'Cotizaciones', 'Cotizaciones', 'manage_options', 'mopar-cotizaciones', 'taller_cotizaciones_func');
-	add_submenu_page( 'mopar-taller', 'Trabajos terminados', 'Trabajos terminados', 'manage_options', 'mopar-trabajos-terminados', 'taller_trabajos_terminados_func');
+	add_submenu_page( 'mopar-taller', 'Trabajos Realizado', 'Trabajos Realizado', 'manage_options', 'mopar-trabajos-realizado', 'taller_trabajos_realizado_func');
 }
 add_action('admin_menu', 'theme_options_panel');
  
@@ -51,18 +51,18 @@ function taller_ot_func(){
 	include('views/ot.php');	
 }
 
-function taller_cotizaciones_func(){	
+function taller_cotizaciones_func(){
 	$vehiculos = Mopar::getVehiculos();
 	$clientes = Mopar::getClientes();
     $ots = Mopar::getCotizaciones();
 	include('views/cotizaciones.php');	
 }
 
-function taller_trabajos_terminados_func(){	
+function taller_trabajos_realizado_func(){
 	$vehiculos = Mopar::getVehiculos();
 	$clientes = Mopar::getClientes();
-    $ots = Mopar::getTrabajosTerminados();
-	include('views/trabajos-terminados.php');	
+    $ots = Mopar::getTrabajosRealizado();
+	include('views/trabajos-realizados.php');
 }
 
 
@@ -575,7 +575,7 @@ class Mopar{
     	return $ots;
 	}
 
-	public static function getTrabajosTerminados(){
+	public static function getTrabajosRealizado(){
 		global $wpdb;
     	$ots = $wpdb->get_results('SELECT * FROM ot WHERE estado = 2 ORDER BY id DESC');
 
