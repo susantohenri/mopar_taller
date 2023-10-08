@@ -102,7 +102,15 @@ if( $_POST ){
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
 					<td data-estado="<?php echo $ot->estado; ?>" class="text-center align-middle">
-						<i class="fa fa-circle text-<?php echo 1 == $ot->estado ? 'danger' : 'success'; ?>"></i>
+						<?php if (1 == $ot->estado): ?>
+							<a class="btnComplete">
+								<i class="fa fa-circle text-danger"></i>
+							</a>
+						<?php elseif(2 == $ot->estado): ?>
+							<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>">
+								<i class="fa fa-circle text-success"></i>
+							</a>
+						<?php endif; ?>
 					</td>
 					<td class="text-center" style="white-space: nowrap;">
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar OT"><i class="fa fa-pencil"></i></button>
@@ -550,12 +558,52 @@ $(document).ready(function(){
 		            				type: 'green',
 		            				content: 'OT borrado correctamente'
 		            			});
-		            			tr.fadeOut(400);
+								tr.fadeOut(400);
 		            		}
 		            	})
 		            }
 		        }
 		    }
+		});
+	});
+
+	$(".btnComplete").click(function(){
+		tr = $(this).closest('tr');
+		regid = tr.data('regid');
+
+		$.confirm({
+			title: 'Completar OT!',
+			content: '¿Quiere completar el trabajo para esta cotizacion?',
+			type: 'green',
+			icon: 'fa fa-success',
+			buttons: {
+				NO:{
+					text: 'Cancelar',
+					btnClass: 'btn-red',
+				},
+				SI:{
+					text: 'Si',
+					btnClass: 'btn-green',
+					action: function(){
+						$.ajax({
+							type: 'POST',
+							url: '<?php echo admin_url('admin-ajax.php'); ?>',
+							dataType: 'json',
+							data: 'action=completar_ot&regid=' + regid,
+							beforeSend: function(){
+							},
+							success: function(json){
+								$.alert({
+									title: false,
+									type: 'green',
+									content: 'Cotizacion borrada correctamente'
+								});
+								window.location.reload()
+							}
+						})
+					}
+				}
+			}
 		});
 	});
 

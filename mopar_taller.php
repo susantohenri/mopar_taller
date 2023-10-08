@@ -269,6 +269,17 @@ function eliminar_ot_callback(){
 	exit();  
 }
 
+function completar_ot_callback(){
+	global $wpdb;
+	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();  
+}
+
 
 function insertar_ot_callback(){
 	global $wpdb;
@@ -502,6 +513,7 @@ add_action('wp_ajax_insertar_ot','insertar_ot_callback');
 add_action( 'wp_ajax_md_support_save','editar_ot' );
 add_action( 'wp_ajax_nopriv_md_support_save','editar_ot' );
 add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
+add_action('wp_ajax_completar_ot','completar_ot_callback');
 add_action('wp_ajax_get_vehiculos_by_cliente','get_vehiculos_by_cliente_callback');
 add_action('wp_ajax_get_ot','get_ot_callback');
 add_action('rest_api_init', 'mopar_taller_select2_clientes');
