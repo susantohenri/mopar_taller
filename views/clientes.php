@@ -29,7 +29,7 @@ else:
 				<?php foreach ($clientes as $cliente): ?>
 				<tr data-regid="<?php echo $cliente->id; ?>">
 					<td data-regid="<?php echo $cliente->id; ?>"> <?php echo $cliente->id; ?> </td>
-					<td data-nombres="<?php echo $cliente->nombres; ?>" data-apellidopaterno="<?php echo $cliente->apellidoPaterno; ?>" data-apellidomaterno="<?php echo $cliente->apellidoMaterno; ?>"> <?php echo Mopar::getNombreCliente($cliente->id) ?> </td>
+					<td data-nombres="<?php echo $cliente->nombres; ?>" data-apellidopaterno="<?php echo $cliente->apellidoPaterno; ?>" data-apellidomaterno="<?php echo $cliente->apellidoMaterno; ?>"> <?php echo Mopar::getNombreCliente($cliente->id, false) ?> </td>
 					<td data-email="<?php echo $cliente->email; ?>"> <?php echo $cliente->email; ?> </td>
 					<td data-telefono="<?php echo $cliente->telefono; ?>"> <?php echo $cliente->telefono; ?> </td>
 					<td class="text-center">

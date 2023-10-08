@@ -13,7 +13,9 @@ function theme_options_panel(){
 	add_submenu_page( 'mopar-taller', 'Modelos', 'Modelos', 'manage_options', 'mopar-modelos', 'taller_modelos_func');
 	add_submenu_page( 'mopar-taller', 'Clientes', 'Clientes', 'manage_options', 'mopar-clientes', 'taller_clientes_func');
 	add_submenu_page( 'mopar-taller', 'Vehiculos', 'Vehiculos', 'manage_options', 'mopar-vehiculos', 'taller_vehiculos_func');
-	add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');
+	// add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');
+	add_submenu_page( 'mopar-taller', 'Cotizaciones', 'Cotizaciones', 'manage_options', 'mopar-cotizaciones', 'taller_cotizaciones_func');
+	add_submenu_page( 'mopar-taller', 'Trabajos Realizado', 'Trabajos Realizado', 'manage_options', 'mopar-trabajos-realizado', 'taller_trabajos_realizado_func');
 }
 add_action('admin_menu', 'theme_options_panel');
  
@@ -42,11 +44,25 @@ function taller_clientes_func(){
 	include('views/clientes.php');	
 }
 
-function taller_ot_func(){	
+function taller_ot_func(){
 	$vehiculos = Mopar::getVehiculos();
 	$clientes = Mopar::getClientes();
     $ots = Mopar::getOts();
 	include('views/ot.php');	
+}
+
+function taller_cotizaciones_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+    $ots = Mopar::getCotizaciones();
+	include('views/cotizaciones.php');	
+}
+
+function taller_trabajos_realizado_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+    $ots = Mopar::getTrabajosRealizado();
+	include('views/trabajos-realizados.php');
 }
 
 
@@ -251,6 +267,28 @@ function eliminar_ot_callback(){
 
 	echo json_encode($json);
 	exit();  
+}
+
+function completar_ot_callback(){
+	global $wpdb;
+	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();  
+}
+
+function uncompletar_ot_callback(){
+	global $wpdb;
+	$wpdb->update('ot', ['estado' => 1], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
 }
 
 
@@ -486,6 +524,8 @@ add_action('wp_ajax_insertar_ot','insertar_ot_callback');
 add_action( 'wp_ajax_md_support_save','editar_ot' );
 add_action( 'wp_ajax_nopriv_md_support_save','editar_ot' );
 add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
+add_action('wp_ajax_completar_ot','completar_ot_callback');
+add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
 add_action('wp_ajax_get_vehiculos_by_cliente','get_vehiculos_by_cliente_callback');
 add_action('wp_ajax_get_ot','get_ot_callback');
 add_action('rest_api_init', 'mopar_taller_select2_clientes');
@@ -548,6 +588,20 @@ class Mopar{
 	public static function getOts(){
 		global $wpdb;
     	$ots = $wpdb->get_results('SELECT * FROM ot ORDER BY id DESC');
+
+    	return $ots;
+	}
+
+	public static function getCotizaciones(){
+		global $wpdb;
+    	$ots = $wpdb->get_results('SELECT * FROM ot WHERE estado IN (1, 2) ORDER BY id DESC');
+
+    	return $ots;
+	}
+
+	public static function getTrabajosRealizado(){
+		global $wpdb;
+    	$ots = $wpdb->get_results('SELECT * FROM ot WHERE estado = 2 ORDER BY id DESC');
 
     	return $ots;
 	}
