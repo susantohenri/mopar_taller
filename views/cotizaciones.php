@@ -40,7 +40,7 @@ if( $_POST ){
 		'detalle' => json_encode($_POST['detalle']),
 		'valor' => $_POST['valor'],
 		'km' => $_POST['km'],
-		'estado' => $_POST['estado'],
+		'estado' => 1,
 		'observaciones' => $_POST['observaciones'],
 		'archivo' => $archivo
 	];
@@ -88,7 +88,6 @@ if( $_POST ){
 					<th> Vehiculo </th>
 					<th> Valor Total </th>
 					<th> Km. </th>
-					<th> Estado </th>
 					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
@@ -101,7 +100,6 @@ if( $_POST ){
 					<td data-vehiculo="<?php echo $ot->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($ot->vehiculo_id) ?> </td>
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
-					<td data-estado="<?php echo $ot->estado; ?>"> <?php echo Mopar::getEstado($ot->estado); ?> </td>
 					<td class="text-center" style="white-space: nowrap;">
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar OT"><i class="fa fa-pencil"></i></button>
 						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver OT"><i class="fa fa-search"></i></a>
@@ -189,25 +187,12 @@ if( $_POST ){
 				    	<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
-					          		<span class="input-group-text">Estado</span>
-						        </div>
-						        <select name="estado" class="form-control" required>
-						        	<option value="">Seleccione</option>
-						        	<option value="1">Cotización</option>
-						        	<option value="2">Trabajo Realizado</option>
-						        	<option value="3">Trabajo NO Realizado</option>
-						        </select>
-					      	</div>
-				    	</div>
-				    	<div class="form-group col-md-3">
-					      	<div class="input-group">
-						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Km.</span>
 						        </div>
 						        <input type="text" class="form-control" name="km" required>
 					      	</div>
 				    	</div>
-				    	<div class="form-group col-md-3">
+				    	<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Total</span>
@@ -313,25 +298,12 @@ if( $_POST ){
 				    	<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
-					          		<span class="input-group-text">Estado</span>
-						        </div>
-						        <select name="estado" class="form-control" required>
-						        	<option value="">Seleccione</option>
-						        	<option value="1">Cotización</option>
-						        	<option value="2">Trabajo Realizado</option>
-						        	<option value="3">Trabajo NO Realizado</option>
-						        </select>
-					      	</div>
-				    	</div>
-				    	<div class="form-group col-md-3">
-					      	<div class="input-group">
-						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Km.</span>
 						        </div>
 						        <input type="text" class="form-control" name="km" required>
 					      	</div>
 				    	</div>
-				    	<div class="form-group col-md-3">
+				    	<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Total</span>
@@ -460,7 +432,6 @@ $(document).ready(function(){
 					recalcular();
 				})
 
-				$('#modalEditOT [name=estado]').val(json.ot.estado);
 				$('#modalEditOT [name=km]').val(json.ot.km);
 				$('#modalEditOT [name=valor]').val(json.ot.valor);
 				$('#modalEditOT [name=observaciones]').val(json.ot.observaciones);
