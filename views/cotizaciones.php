@@ -180,11 +180,11 @@ if( $_POST ){
 					      		</thead>
 					      		<tbody class="bg-light">
 						      		<tr>
-						      			<td class="w-75">
+										<td class="">
 						      				<input type="text" name="detalle[item][]" class="form-control" required>
 						      			</td>
-						      			<td class="w-25">
-						      				<input type="text" name="detalle[precio][]" class="form-control precio text-right" required>
+										<td class="">
+											<input type="text" name="detalle[precio][]" class="form-control precio text-right" required>
 						      			</td>
 						      			<td></td>
 						      		</tr>
