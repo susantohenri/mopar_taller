@@ -61,21 +61,21 @@ if( $_POST ){
 				<tr data-regid="<?php echo $solicitud->id; ?>">
 					<td data-regid="<?php echo $solicitud->id; ?>"> <?php echo $solicitud->id; ?> </td>
 					<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id) ?> </td>
-					<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
+					<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 					<td data-estado="<?php echo $solicitud->estado; ?>" class="text-center align-middle">
 						<?php if (1 == $solicitud->estado): ?>
 							<a class="btnComplete">
 								<i class="fa fa-circle text-danger"></i>
 							</a>
-						<?php elseif(2 == $solicitud->estado): ?>
-							<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $solicitud->id; ?>">
+						<?php elseif(in_array($solicitud->estado, [2,4])): ?>
+							<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>">
 								<i class="fa fa-circle text-success"></i>
 							</a>
 						<?php endif; ?>
 					</td>
 					<td class="text-center" style="white-space: nowrap;">
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar Solicitud"><i class="fa fa-pencil"></i></button>
-						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver Solicitud"><i class="fa fa-search"></i></a>
+						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver Solicitud"><i class="fa fa-search"></i></a>
 						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar Solicitud"><i class="fa fa-trash-o"></i></button>
 					</td>
 				</tr>
@@ -117,7 +117,7 @@ if( $_POST ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Vehiculo</span>
 						        </div>
-						        <select name="vehiculo" class="form-control" disabled required>
+						        <select name="vehiculo" class="form-control" disabled>
 						        	<option value="">Seleccione Cliente primero</option>
 						        </select>
 					      	</div>
@@ -177,7 +177,7 @@ if( $_POST ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Vehiculo</span>
 						        </div>
-						        <select name="vehiculo" class="form-control" disabled required>
+						        <select name="vehiculo" class="form-control" disabled>
 						        	<option value="">Seleccione Cliente primero</option>
 						        </select>
 					      	</div>
@@ -237,7 +237,6 @@ $(document).ready(function(){
 				$('#modalEditSolicitud [name=cliente]').html(`<option value="${json.solicitud.cliente_id}" selected>${json.cliente.nombres} ${json.cliente.apellidoPaterno} ${json.cliente.apellidoMaterno}</option>`)
 
     			$('[name=vehiculo]').empty();
-				$('[name=vehiculo]').append(new Option('Seleccione Vehiculo', ''));
 				$.each(json.vehiculos, function(k,v){
 					$('[name=vehiculo]').append(new Option(v.marca+" - "+v.modelo+" - "+v.ano, v.id));
 				})
@@ -266,7 +265,6 @@ $(document).ready(function(){
 			},
 			success: function(json){
 				$('[name=vehiculo]').empty();
-				$('[name=vehiculo]').append(new Option('Seleccione Vehiculo', ''));
 				$.each(json.vehiculos, function(k,v){
 					$('[name=vehiculo]').append(new Option(v.marca+" - "+v.modelo+" - "+v.ano, v.id));
 				})
@@ -341,12 +339,20 @@ $(document).ready(function(){
 							beforeSend: function(){
 							},
 							success: function(json){
-								$.alert({
-									title: false,
-									type: 'green',
-									content: 'Cotizacion borrada correctamente'
-								});
-								window.location.reload()
+								if (`ERROR` === json.status) {
+									$.alert({
+										title: false,
+										type: 'red',
+										content: json.message
+									});
+								} else {
+									$.alert({
+										title: false,
+										type: 'green',
+										content: 'Cotizacion borrada correctamente'
+									});
+									window.location.reload()
+								}
 							}
 						})
 					}

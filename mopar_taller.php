@@ -320,10 +320,19 @@ function uncompletar_ot_callback(){
 
 function completar_solicitud_callback(){
 	global $wpdb;
-	$wpdb->update('solicitud', ['estado' => 2], ['id' => $_POST['regid']]);
-	$json = [
-		'status' => 'OK'
-	];
+	$id = $_POST['regid'];
+	$solicitud = Mopar::getOneSolicitud($id);
+	if (0 == $solicitud->vehiculo_id) {
+		$json = [
+			'status' => 'ERROR',
+			'message' => 'Antes de continuar debe completar la informacion de esta Solicitud de Servicio'
+		];
+	} else {
+		$wpdb->update('solicitud', ['estado' => 2], ['id' => $id]);
+		$json = [
+			'status' => 'OK'
+		];
+	}
 
 	echo json_encode($json);
 	exit();  
