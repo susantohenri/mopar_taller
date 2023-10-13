@@ -1,6 +1,6 @@
 ﻿<?php
-	$inserted = false;
-	$updated = false;
+$inserted = false;
+$updated = false;
 ?>
 <?php include 'header.php'; ?>
 
@@ -29,6 +29,7 @@
 							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar Solicitud"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver Solicitud"><i class="fa fa-search"></i></a>
 							<button class="btn btn-danger btnUncomplete" data-toggle="tooltip" title="Eliminar Solicitud"><i class="fa fa-trash-o"></i></button>
+							<button class="btn btn-warning btnProceed" data-toggle="tooltip" title="Proceed Solicitud"><i class="fa fa-share"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -188,6 +189,45 @@
 										content: 'Solicitud borrado correctamente'
 									});
 									tr.fadeOut(400);
+								}
+							})
+						}
+					}
+				}
+			});
+		});
+
+		$(".btnProceed").click(function() {
+			tr = $(this).closest('tr');
+			regid = tr.data('regid');
+
+			$.confirm({
+				title: 'Proceed Solicitud!',
+				content: '¿Desea convertir esta Orden de Ingreso en una Cotización?',
+				type: 'red',
+				icon: 'fa fa-warning',
+				buttons: {
+					NO: {
+						text: 'No',
+						btnClass: 'btn-red',
+					},
+					SI: {
+						text: 'Si',
+						btnClass: 'btn-green',
+						action: function() {
+							$.ajax({
+								type: 'POST',
+								url: '<?php echo admin_url('admin-ajax.php'); ?>',
+								dataType: 'json',
+								data: 'action=proceed_solicitud&regid=' + regid,
+								beforeSend: function() {},
+								success: function(json) {
+									$.alert({
+										title: false,
+										type: 'green',
+										content: 'Solicitud borrado correctamente'
+									});
+									window.location.reload()
 								}
 							})
 						}
