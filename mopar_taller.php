@@ -77,7 +77,7 @@ function taller_solicitudes_de_servicio_func(){
 function taller_orden_de_ingreso_func(){
 	$vehiculos = Mopar::getVehiculos();
 	$clientes = Mopar::getClientes();
-	$solicituds = Mopar::getSolicitudsDeServicioso();
+	$solicituds = Mopar::getOrdenDeIngreso();
 	include('views/orden_de_ingreso.php');
 }
 
