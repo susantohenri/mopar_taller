@@ -710,6 +710,13 @@ class Mopar{
     	return $solicitud;
 	}
 
+	public static function getOneSolicitudByOtId($ot_id){
+		global $wpdb;
+		$solicitud = $wpdb->get_row('SELECT * FROM solicitud WHERE ot_id = ' . $ot_id);
+
+		return $solicitud;
+	}
+
 	public static function getOts(){
 		global $wpdb;
     	$ots = $wpdb->get_results('SELECT * FROM ot ORDER BY id DESC');

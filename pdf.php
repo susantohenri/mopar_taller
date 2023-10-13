@@ -8,6 +8,7 @@ if (user_can( $current_user, 'administrator' )) {
 	$ot = Mopar::getOneOt($_GET['id']);
 	$cliente = Mopar::getOneCliente($ot->cliente_id);
 	$vehiculo = Mopar::getOneVehiculo($ot->vehiculo_id);
+	$solicitud = Mopar::getOneSolicitudByOtId($_GET['id']);
 	
 	if( $ot->estado == 1 ){
 		$titulo_ot = 'Cotización';
@@ -110,6 +111,7 @@ if (user_can( $current_user, 'administrator' )) {
 		}
 
 		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
+		$solicitud_inicial = !isset($solicitud->solicitud) ? '' : '<strong>Solicitud inicial: </strong> <br>' . nl2br($solicitud->solicitud);
 		$lastupdated = is_null($ot->upddate) ? '-' : date_format(date_create($ot->upddate), 'd/m/Y - H:i');
 
 		$html .= '
@@ -121,9 +123,11 @@ if (user_can( $current_user, 'administrator' )) {
 	<br>
 	<table border="0" style="width: 590px">
 		<tr>
-			<td>
+			<td style="width: 590px">
 				<strong>Kilometraje: ' . $ot->km . '</strong><br>
 				'.$observaciones.'
+				<br>
+				'.$solicitud_inicial.'
 			</td>
 		</tr>
 		<tr>
