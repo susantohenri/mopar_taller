@@ -106,9 +106,37 @@ if (user_can( $current_user, 'administrator' )) {
 			</td>
 		</tr>
 	</table>
+	</page>';
+
+	$page_2 = '
+	<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
+	    <br><br><br><br><br><br><br><br>
+	    <div style="text-align:center">
+	        <img src="https://www.doctormopar.com/wp-content/uploads/2023/10/Screen-Shot-2023-10-13-at-16.27.35.png">
+	    </div>
+	    <br><br><br><br><br><br><br><br>
+	    <hr>
+	    <br><br><br><hr>
+	    <br><br><br><hr>
+	    <br><br><br><hr>
+	    <br><br><br><br><br><br><br><br>
+	    <table style="width: 590px;">
+	        <tr>
+	            <td style="width: 196px; text-align: center;">
+	                <hr>
+	                DOCTOR MOPAR
+	            </td>
+	            <td style="width: 196px; text-align: center;">&nbsp;</td>
+	            <td style="width: 196px; text-align: center;">
+	                <hr>
+	                '. $cliente->nombres . ' ' . $cliente->apellidoPaterno .'<br>
+	                (Customer)
+	            </td>
+	        </tr>
+	    </table>
 	</page>
 	';
-
+    if (2 == $solicitud->estado) $html .= $page_2;
 
 	
 

@@ -111,7 +111,7 @@ if (user_can( $current_user, 'administrator' )) {
 		}
 
 		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
-		$solicitud_inicial = !isset($solicitud->solicitud) ? '' : '<strong>Solicitud inicial: </strong> <br>' . nl2br($solicitud->solicitud);
+		$solicitud_inicial = !isset($solicitud->solicitud) && '' !== $solicitud->solicitud ? '' : '<strong>Solicitud inicial: </strong> <br>' . nl2br($solicitud->solicitud);
 		$lastupdated = is_null($ot->upddate) ? '-' : date_format(date_create($ot->upddate), 'd/m/Y - H:i');
 
 		$html .= '
