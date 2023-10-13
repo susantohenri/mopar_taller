@@ -84,16 +84,16 @@ if (user_can( $current_user, 'administrator' )) {
 		</tr>
 	</table>
 	<br><br><br>
-	<table style="width: 590px;" border="1">
+	<table border="1">
 		<tr>
-			<td style="width: 480px; text-align: center;"> <strong>solicitud</strong> </td>
+			<td style="width: 635px; text-align: center;"> <strong>solicitud</strong> </td>
 		</tr>';
 
 		$lastupdated = is_null($solicitud->upddate) ? '-' : date_format(date_create($solicitud->upddate), 'd/m/Y - H:i');
 
 		$html .= '
 		<tr>
-			<td style="text-align: justify; padding: 0 10%; white-space:pre-wrap"><strong>'. $solicitud->solicitud .'</strong></td>
+			<td style="width: 635px; text-align: justify; white-space:pre-wrap"><strong>'. $solicitud->solicitud .'</strong></td>
 		</tr>
 	</table>
 	<br>
@@ -112,7 +112,6 @@ if (user_can( $current_user, 'administrator' )) {
 
 	
 
-	
 	require_once('html2pdf/html2pdf.class.php');
     $html2pdf = new HTML2PDF($orientation,'LETTER','es');
     $html2pdf->WriteHTML($html);
