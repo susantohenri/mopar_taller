@@ -299,6 +299,7 @@ function eliminar_solicitud_callback(){
 function completar_ot_callback(){
 	global $wpdb;
 	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 4], ['ot_id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
