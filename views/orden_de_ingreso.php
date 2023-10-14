@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $inserted = false;
 $updated = false;
 ?>
@@ -237,9 +237,7 @@ $updated = false;
 		});
 
 		$('#tabla_solicituds').DataTable({
-			order: [
-				[1, 'asc']
-			]
+			"ordering": false
 		});
 	});
 </script>
