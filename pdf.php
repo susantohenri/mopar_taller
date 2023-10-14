@@ -110,8 +110,8 @@ if (user_can( $current_user, 'administrator' )) {
 			</tr>';
 		}
 
-		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
-		$solicitud_inicial = !isset($solicitud->solicitud) && '' !== $solicitud->solicitud ? '' : '<strong>Solicitud inicial: </strong> <br>' . nl2br($solicitud->solicitud);
+		$observaciones = '' === $ot->observaciones ? '' : '<tr><td style="width: 590px"><strong>Observaciones adicionales: </strong><br>' . nl2br($ot->observaciones) . '</td></tr>';
+		$solicitud_inicial = !isset($solicitud->solicitud) && '' !== $solicitud->solicitud ? '' : '<tr><td style="width: 590px"><strong>Solicitud inicial: </strong><br>' . nl2br($solicitud->solicitud) . '</td></tr>';
 		$lastupdated = is_null($ot->upddate) ? '-' : date_format(date_create($ot->upddate), 'd/m/Y - H:i');
 
 		$html .= '
@@ -124,12 +124,11 @@ if (user_can( $current_user, 'administrator' )) {
 	<table border="0" style="width: 590px">
 		<tr>
 			<td style="width: 590px">
-				<strong>Kilometraje: ' . $ot->km . '</strong><br>
-				'.$observaciones.'
-				<br>
-				'.$solicitud_inicial.'
+			    <strong>Kilometraje: ' . $ot->km . '</strong>
 			</td>
 		</tr>
+		'.$observaciones.'
+		'.$solicitud_inicial.'
 		<tr>
 			<td>
 				<strong>Creado:</strong> '.date_format(date_create($ot->regdate), 'd/m/Y - H:i').'
@@ -142,9 +141,6 @@ if (user_can( $current_user, 'administrator' )) {
 	';
 
 
-	
-
-	
 	require_once('html2pdf/html2pdf.class.php');
     $html2pdf = new HTML2PDF($orientation,'LETTER','es');
     $html2pdf->WriteHTML($html);
