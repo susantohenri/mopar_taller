@@ -300,7 +300,7 @@ function eliminar_solicitud_callback(){
 function completar_ot_callback(){
 	global $wpdb;
 	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
-	$wpdb->update('solicitud', ['estado' => 4], ['ot_id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 5], ['ot_id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
@@ -692,7 +692,7 @@ class Mopar{
 
 	public static function getSolicitudsDeServicioso(){
 		global $wpdb;
-    	$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,4) ORDER BY id DESC');
+		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,5) ORDER BY id DESC');
 
     	return $solicituds;
 	}
@@ -791,6 +791,19 @@ class Mopar{
 			case 1: $estado = 'Cotización'; break;
         	case 2: $estado = 'Trabajo Realizado'; break;
         	case 3: $estado = 'Trabajo NO Realizado'; break;
+			default: $estado = ''; break;
+		}
+
+		return $estado;
+	}
+
+	public static function getSolicitudEstado($estado_id){
+		switch ($estado_id) {
+			case 1: $estado = 'Solicitudes de Servicio'; break;
+        	case 2: $estado = 'Orden de Ingreso'; break;
+        	case 3: $estado = 'Cotización without Ingreso'; break;
+        	case 4: $estado = 'Cotización with Ingreso'; break;
+        	case 5: $estado = 'Trabajo NO Realizado'; break;
 			default: $estado = ''; break;
 		}
 

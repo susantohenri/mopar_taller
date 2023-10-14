@@ -64,7 +64,7 @@ if ($_POST) {
 								<a class="btnComplete">
 									<i class="fa fa-circle text-danger"></i>
 								</a>
-							<?php elseif (in_array($solicitud->estado, [2, 4])) : ?>
+							<?php elseif (in_array($solicitud->estado, [2, 5])) : ?>
 								<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>">
 									<i class="fa fa-circle text-success"></i>
 								</a>
