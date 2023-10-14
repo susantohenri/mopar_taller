@@ -183,20 +183,7 @@ if( $_POST ){
 					      		</tfoot>
 					      	</table>
 				    	</div>
-				    	<div class="form-group col-md-6">
-					      	<div class="input-group">
-						        <div class="input-group-prepend">
-					          		<span class="input-group-text">Estado</span>
-						        </div>
-						        <select name="estado" class="form-control" required>
-						        	<option value="">Seleccione</option>
-						        	<option value="1">Cotización</option>
-						        	<option value="2">Trabajo Realizado</option>
-						        	<option value="3">Trabajo NO Realizado</option>
-						        </select>
-					      	</div>
-				    	</div>
-				    	<div class="form-group col-md-3">
+						<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Km.</span>
@@ -204,7 +191,7 @@ if( $_POST ){
 						        <input type="text" class="form-control" name="km" required>
 					      	</div>
 				    	</div>
-				    	<div class="form-group col-md-3">
+						<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Total</span>
@@ -307,20 +294,7 @@ if( $_POST ){
 					      		</tfoot>
 					      	</table>
 				    	</div>
-				    	<div class="form-group col-md-6">
-					      	<div class="input-group">
-						        <div class="input-group-prepend">
-					          		<span class="input-group-text">Estado</span>
-						        </div>
-						        <select name="estado" class="form-control" required>
-						        	<option value="">Seleccione</option>
-						        	<option value="1">Cotización</option>
-						        	<option value="2">Trabajo Realizado</option>
-						        	<option value="3">Trabajo NO Realizado</option>
-						        </select>
-					      	</div>
-				    	</div>
-				    	<div class="form-group col-md-3">
+						<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Km.</span>
@@ -328,7 +302,7 @@ if( $_POST ){
 						        <input type="text" class="form-control" name="km" required>
 					      	</div>
 				    	</div>
-				    	<div class="form-group col-md-3">
+						<div class="form-group col-md-6">
 					      	<div class="input-group">
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Total</span>
