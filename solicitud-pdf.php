@@ -8,6 +8,7 @@ if (user_can( $current_user, 'administrator' )) {
 	$solicitud = Mopar::getOneSolicitud($_GET['id']);
 	$cliente = Mopar::getOneCliente($solicitud->cliente_id);
 	$vehiculo = 0 != $solicitud->vehiculo_id ? Mopar::getOneVehiculo($solicitud->vehiculo_id) : json_decode('{"marca":"","modelo":"","ano":"","color":"","patente":"","nro_motor":""}');
+	$title = 1 == $solicitud->estado ? 'Solicitud de servicio' : 'Orden de Ingreso';
 
 	$html = '
 	<!--
@@ -43,7 +44,7 @@ if (user_can( $current_user, 'administrator' )) {
 	<table style="width: 590px;">
 		<tr>
 			<td style="width: 590px;">
-				<h1 style="text-align: center">Solicitud de servicio n&deg;000'.$solicitud->id.'</h1>
+				<h1 style="text-align: center">'.$title.' n&deg;000'.$solicitud->id.'</h1>
 			</td>
 		</tr>
 	</table>
