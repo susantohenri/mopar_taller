@@ -1,6 +1,29 @@
 ﻿<?php
 $inserted = false;
 $updated = false;
+
+if ($_POST) {
+	global $wpdb;
+
+	$array_insert = [
+		'cliente_id' => $_POST['cliente'],
+		'vehiculo_id' => $_POST['vehiculo'],
+		'solicitud' => $_POST['solicitud']
+	];
+
+	if ($_POST['action'] == 'editar_solicitud') {
+		$before_update = (array) Mopar::getOneSolicitud($_POST['solicitud_id']);
+		$posted_attr = array_keys($array_insert);
+		$before_update = array_filter($before_update, function ($value, $attr) use ($posted_attr) {
+			return in_array($attr, $posted_attr);
+		}, ARRAY_FILTER_USE_BOTH);
+		if ($before_update !== $array_insert) $array_insert['upddate'] = date('Y-m-d H:i:s');
+
+		if ($wpdb->update('solicitud', $array_insert, ['id' => $_POST['solicitud_id']])) {
+			$updated = true;
+		}
+	}
+}
 ?>
 <?php include 'header.php'; ?>
 
@@ -86,6 +109,7 @@ $updated = false;
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
+					<button type="submit" class="btn btn-success btnGuardar">Guardar <i class="fa fa-save"></i> </button>
 				</div>
 			</div>
 		</div>
@@ -137,6 +161,12 @@ $updated = false;
 				}
 			})
 		})
+
+		$("#formEditSolicitud").submit(function(e) {
+			$(".overlay").show();
+			e.preventDefault();
+			$("#formEditSolicitud")[0].submit();
+		});
 
 		$("[name=cliente]").change(function() {
 			cliente_id = $(this).val();
