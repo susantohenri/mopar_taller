@@ -38,7 +38,7 @@ if ($_POST) {
 <div class="box pr-4">
 	<div class="box-header mb-4">
 		<h2 class="font-weight-light text-center text-muted float-left"> Solicitudes de Servicio </h2>
-		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modalNewSolicitud">Nueva Solicitude</button>
+		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modalNewSolicitud">Nueva Solicitud</button>
 
 		<div class="clearfix"></div>
 	</div>
@@ -71,9 +71,11 @@ if ($_POST) {
 							<?php endif; ?>
 						</td>
 						<td class="text-center" style="white-space: nowrap;">
-							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar Solicitud"><i class="fa fa-pencil"></i></button>
-							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver Solicitud"><i class="fa fa-search"></i></a>
-							<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar Solicitud"><i class="fa fa-trash-o"></i></button>
+							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
+							<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+							<button class="btn btn-warning btnProceed" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-car"></i></button>
+							<button class="btn btn-warning btnProceed" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>

@@ -87,7 +87,7 @@ if (user_can( $current_user, 'administrator' )) {
 	<br><br><br>
 	<table border="1">
 		<tr>
-			<td style="width: 635px; text-align: center;"> <strong>solicitud</strong> </td>
+			<td style="width: 635px; text-align: center;"> <strong>Solicitud</strong> </td>
 		</tr>';
 
 		$lastupdated = is_null($solicitud->upddate) ? '-' : date_format(date_create($solicitud->upddate), 'd/m/Y - H:i');

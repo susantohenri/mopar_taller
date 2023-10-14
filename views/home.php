@@ -37,27 +37,36 @@
 <div class="container" style="float: left; margin-top: 40px;"> 
 	<div class="row botonera">
 		<div class="col-3">
-			<a href="admin.php?page=mopar-vehiculos">
-				<i class="fa fa-car"></i>
-				Vehiculos
+			<a href="admin.php?page=mopar-modelos">
+				<i class="fa fa-suitcase"></i>
+				Modelos
 			</a>
 		</div>
+		
 		<div class="col-3">
 			<a href="admin.php?page=mopar-clientes">
 				<i class="fa fa-address-card"></i>
 				Clientes
 			</a>
 		</div>
+		
 		<div class="col-3">
-			<a href="admin.php?page=mopar-ot">
+			<a href="admin.php?page=mopar-vehiculos">
+				<i class="fa fa-car"></i>
+				Vehiculos
+			</a>
+		</div>
+		
+		<div class="col-3">
+			<a href="admin.php?page=mopar-cotizaciones">
 				<i class="fa fa-file-text"></i>
-				OTs
+				Cotizaciones
 			</a>
 		</div>
 		<div class="col-3">
-			<a href="admin.php?page=mopar-modelos">
-				<i class="fa fa-suitcase"></i>
-				Modelos
+			<a href="admin.php?page=mopar-trabajos-realizado">
+				<i class="fa fa-file-text"></i>
+				OT
 			</a>
 		</div>
 	</div>	

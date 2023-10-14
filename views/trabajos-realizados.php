@@ -73,7 +73,7 @@ if( $_POST ){
 
 <div class="box pr-4">
 	<div class="box-header mb-4">
-		<h2 class="font-weight-light text-center text-muted float-left"> Lista de Trabajos Realizados </h2>
+		<h2 class="font-weight-light text-center text-muted float-left">Trabajos Realizados </h2>
 
 		<div class="clearfix"></div>
 	</div>
@@ -82,7 +82,7 @@ if( $_POST ){
 			<thead>
 				<tr>
 					<th>#</th>
-					<th> Titulo OT </th>
+					<th> Titulo </th>
 					<th> Cliente </th>
 					<th> Vehiculo </th>
 					<th> Valor Total </th>
@@ -100,9 +100,9 @@ if( $_POST ){
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
 					<td class="text-center" style="white-space: nowrap;">
-						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar OT"><i class="fa fa-pencil"></i></button>
-						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver OT"><i class="fa fa-search"></i></a>
-						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar OT"><i class="fa fa-trash-o"></i></button>
+						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
+						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
+						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
 					</td>
 				</tr>
 				<?php endforeach; ?>

@@ -74,7 +74,7 @@ if( $_POST ){
 <div class="box pr-4">
 	<div class="box-header mb-4">
 		<h2 class="font-weight-light text-center text-muted float-left"> Lista de OTs </h2>
-		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modalNewOT">Nueva OT</button>
+		<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#modalNewOT">Nueva</button>
 
 		<div class="clearfix"></div>
 	</div>

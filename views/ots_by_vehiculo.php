@@ -9,9 +9,9 @@ $ots = Mopar::getOtByVehiculo($_GET['vid']);
 <section id="history">
     <div class="box py-2 px-4">
         <h2 class="font-weight-light text-center text-muted float-left">
-            OTs: <?php echo $nombreVehiculo; ?>
+            Documentos para: <?php echo $nombreVehiculo; ?>
         </h2>
-        <a href="admin.php?page=mopar-ot#new" class="btn btn-primary float-right">Nueva OT</a>
+
 
         <div class="clearfix"></div>
 
@@ -24,12 +24,12 @@ $ots = Mopar::getOtByVehiculo($_GET['vid']);
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th> Titulo OT </th>
+                            <th> Titulo  </th>
                             <th> Cliente </th>
                             <th> Vehiculo </th>
                             <th> Valor Total </th>
                             <th> Km. </th>
-                            <th> Estado </th>
+                            <th> Tipo de Documento </th>
                             <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -44,8 +44,8 @@ $ots = Mopar::getOtByVehiculo($_GET['vid']);
                             <td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
                             <td data-estado="<?php echo $ot->estado; ?>"> <?php echo Mopar::getEstado($ot->estado); ?> </td>
                             <td class="text-center">
-                                <a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info btnEdit" data-toggle="tooltip" title="Ver OT"><i class="fa fa-search"></i></a>
-                                <button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar OT"><i class="fa fa-trash-o"></i></button>
+                                <a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info btnEdit" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
+                                <button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -57,7 +57,7 @@ $ots = Mopar::getOtByVehiculo($_GET['vid']);
 
         <?php else: ?>
 
-        <p class="mt-5"><strong>Aun no hay OTs para el vehiculo seleccionado</strong></p>
+        <p class="mt-5"><strong>Aun no hay Documentos para el vehiculo seleccionado</strong></p>
         
         <?php endif; ?>
     </div>
