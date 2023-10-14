@@ -277,6 +277,7 @@ function eliminar_historial_callback(){
 function eliminar_ot_callback(){
 	global $wpdb;
 	$wpdb->delete( 'ot', ['id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 1], ['ot_id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
