@@ -266,7 +266,7 @@ if( $_POST ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Cliente</span>
 						        </div>
-						        <select name="cliente" class="form-control">
+						        <select name="cliente" class="form-control" disabled>
 						        	<option value="">Seleccione</option>
 						        </select>
 					      	</div>
@@ -409,7 +409,6 @@ $(document).ready(function(){
 				$.each(json.vehiculos, function(k,v){
 					$('[name=vehiculo]').append(new Option(v.marca+" - "+v.modelo+" - "+v.ano, v.id));
 				})
-				$("[name=vehiculo]").removeAttr('disabled');
 				$("[name=vehiculo]").val(json.ot.vehiculo_id);
 
 				$('#modalEditOT [name=titulo]').val(json.ot.titulo);
@@ -522,7 +521,7 @@ $(document).ready(function(){
 				$.each(json.vehiculos, function(k,v){
 					$('[name=vehiculo]').append(new Option(v.marca+" - "+v.modelo+" - "+v.ano, v.id));
 				})
-				$("[name=vehiculo]").removeAttr('disabled');
+				$("#modalNewOT [name=vehiculo]").removeAttr('disabled');
 			}
 		})
 	})
