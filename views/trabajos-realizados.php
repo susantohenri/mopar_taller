@@ -34,13 +34,10 @@ if( $_POST ){
 
 
     $array_insert = [
-		'cliente_id' => $_POST['cliente'],
-		'vehiculo_id' => $_POST['vehiculo'],
 		'titulo' => $_POST['titulo'],
 		'detalle' => json_encode($_POST['detalle']),
 		'valor' => $_POST['valor'],
 		'km' => $_POST['km'],
-		'estado' => $_POST['estado'],
 		'observaciones' => $_POST['observaciones'],
 		'archivo' => $archivo
 	];
@@ -342,6 +339,7 @@ if( $_POST ){
       			</div>
 	      		<div class="modal-footer">
 	        		<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
+					<button type="submit" class="btn btn-success btnGuardar">Guardar <i class="fa fa-save"></i> </button>
 	      		</div>
 			</div>
 	  	</div>
@@ -589,7 +587,7 @@ $(document).ready(function(){
     <?php } ?>
 
     <?php if( $inserted || $updated ){ ?>
-	location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=mopar-ot';
+	location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=mopar-trabajos-realizado';
     <?php } ?>
 
 
