@@ -14,6 +14,8 @@ function theme_options_panel(){
 	add_submenu_page( 'mopar-taller', 'Clientes', 'Clientes', 'manage_options', 'mopar-clientes', 'taller_clientes_func');
 	add_submenu_page( 'mopar-taller', 'Vehiculos', 'Vehiculos', 'manage_options', 'mopar-vehiculos', 'taller_vehiculos_func');
 	// add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');
+	add_submenu_page( 'mopar-taller', 'Solicitudes de Servicio', 'Solicitudes de Servicio', 'manage_options', 'mopar-solicitudes-de-servicio', 'taller_solicitudes_de_servicio_func');
+	add_submenu_page( 'mopar-taller', 'Orden de Ingreso', 'Orden de Ingreso', 'manage_options', 'mopar-orden-de-ingreso', 'taller_orden_de_ingreso_func');
 	add_submenu_page( 'mopar-taller', 'Cotizaciones', 'Cotizaciones', 'manage_options', 'mopar-cotizaciones', 'taller_cotizaciones_func');
 	add_submenu_page( 'mopar-taller', 'Trabajos Realizado', 'Trabajos Realizado', 'manage_options', 'mopar-trabajos-realizado', 'taller_trabajos_realizado_func');
 }
@@ -63,6 +65,20 @@ function taller_trabajos_realizado_func(){
 	$clientes = Mopar::getClientes();
     $ots = Mopar::getTrabajosRealizado();
 	include('views/trabajos-realizados.php');
+}
+
+function taller_solicitudes_de_servicio_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+	$solicituds = Mopar::getSolicitudsDeServicioso();
+	include('views/solicitudes_de_servicio.php');	
+}
+
+function taller_orden_de_ingreso_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+	$solicituds = Mopar::getOrdenDeIngreso();
+	include('views/orden_de_ingreso.php');
 }
 
 
@@ -261,6 +277,18 @@ function eliminar_historial_callback(){
 function eliminar_ot_callback(){
 	global $wpdb;
 	$wpdb->delete( 'ot', ['id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 1], ['ot_id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();  
+}
+
+function eliminar_solicitud_callback(){
+	global $wpdb;
+	$wpdb->delete( 'solicitud', ['id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
@@ -272,6 +300,7 @@ function eliminar_ot_callback(){
 function completar_ot_callback(){
 	global $wpdb;
 	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 4], ['ot_id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
@@ -291,6 +320,61 @@ function uncompletar_ot_callback(){
 	exit();
 }
 
+function completar_solicitud_callback(){
+	global $wpdb;
+	$id = $_POST['regid'];
+	$solicitud = Mopar::getOneSolicitud($id);
+	if (0 == $solicitud->vehiculo_id) {
+		$json = [
+			'status' => 'ERROR',
+			'message' => 'Antes de continuar debe completar la informacion de esta Solicitud de Servicio'
+		];
+	} else {
+		$wpdb->update('solicitud', ['estado' => 2], ['id' => $id]);
+		$json = [
+			'status' => 'OK'
+		];
+	}
+
+	echo json_encode($json);
+	exit();  
+}
+
+function uncompletar_solicitud_callback(){
+	global $wpdb;
+	$wpdb->update('solicitud', ['estado' => 1], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
+}
+
+function proceed_solicitud_callback(){
+	global $wpdb;
+	$solicitud = Mopar::getOneSolicitud($_POST['regid']);
+
+	$wpdb->insert('ot', [
+		'cliente_id' => $solicitud->cliente_id,
+		'vehiculo_id' => $solicitud->vehiculo_id,
+		'titulo' => '',
+		'detalle' => json_encode([]),
+		'valor' => '',
+		'km' => '',
+		'estado' => 1,
+		'observaciones' => ''
+	]);
+
+	$wpdb->update('solicitud', ['estado' => 3, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
+
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
+}
 
 function insertar_ot_callback(){
 	global $wpdb;
@@ -462,6 +546,22 @@ function get_ot_callback(){
 	exit();  
 }
 
+function get_solicitud_callback(){
+	$solicitud_id = $_POST['solicitud_id'];
+	$solicitud = Mopar::getOneSolicitud($solicitud_id);
+
+	$vehiculos = Mopar::getVehiculosByCliente($solicitud->cliente_id);
+	$cliente = Mopar::getOneCliente($solicitud->cliente_id);
+
+	$json = [
+		'solicitud' => $solicitud,
+		'vehiculos' => $vehiculos,
+		'cliente' => $cliente
+	];
+
+	echo json_encode($json);
+	exit();  
+}
 
 
 /************** MODELOS *****************/
@@ -524,10 +624,15 @@ add_action('wp_ajax_insertar_ot','insertar_ot_callback');
 add_action( 'wp_ajax_md_support_save','editar_ot' );
 add_action( 'wp_ajax_nopriv_md_support_save','editar_ot' );
 add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
+add_action('wp_ajax_eliminar_solicitud','eliminar_solicitud_callback');
 add_action('wp_ajax_completar_ot','completar_ot_callback');
 add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
+add_action('wp_ajax_completar_solicitud','completar_solicitud_callback');
+add_action('wp_ajax_uncompletar_solicitud','uncompletar_solicitud_callback');
+add_action('wp_ajax_proceed_solicitud','proceed_solicitud_callback');
 add_action('wp_ajax_get_vehiculos_by_cliente','get_vehiculos_by_cliente_callback');
 add_action('wp_ajax_get_ot','get_ot_callback');
+add_action('wp_ajax_get_solicitud','get_solicitud_callback');
 add_action('rest_api_init', 'mopar_taller_select2_clientes');
 
 class Mopar{
@@ -583,6 +688,34 @@ class Mopar{
     	$cliente = $wpdb->get_results('SELECT * FROM vehiculos where cliente_id = ' . $cliente_id);
 
     	return $cliente;
+	}
+
+	public static function getSolicitudsDeServicioso(){
+		global $wpdb;
+    	$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,4) ORDER BY id DESC');
+
+    	return $solicituds;
+	}
+
+	public static function getOrdenDeIngreso(){
+		global $wpdb;
+    	$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (2,3) ORDER BY id DESC');
+
+    	return $solicituds;
+	}
+
+	public static function getOneSolicitud($id){
+		global $wpdb;
+    	$solicitud = $wpdb->get_row('SELECT * FROM solicitud WHERE id = ' . $id);
+
+    	return $solicitud;
+	}
+
+	public static function getOneSolicitudByOtId($ot_id){
+		global $wpdb;
+		$solicitud = $wpdb->get_row('SELECT * FROM solicitud WHERE ot_id = ' . $ot_id);
+
+		return $solicitud;
 	}
 
 	public static function getOts(){

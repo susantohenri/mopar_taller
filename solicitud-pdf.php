@@ -5,19 +5,9 @@ include '../../../wp-load.php';
 $current_user = wp_get_current_user();
 if (user_can( $current_user, 'administrator' )) {
 
-	$ot = Mopar::getOneOt($_GET['id']);
-	$cliente = Mopar::getOneCliente($ot->cliente_id);
-	$vehiculo = Mopar::getOneVehiculo($ot->vehiculo_id);
-	$solicitud = Mopar::getOneSolicitudByOtId($_GET['id']);
-	
-	if( $ot->estado == 1 ){
-		$titulo_ot = 'Cotización';
-		$titulo_pdf = 'cotizacion';
-	} else {
-		$titulo_ot = 'Orden de Trabajo';
-		$titulo_pdf = 'ot';
-	}
-
+	$solicitud = Mopar::getOneSolicitud($_GET['id']);
+	$cliente = Mopar::getOneCliente($solicitud->cliente_id);
+	$vehiculo = 0 != $solicitud->vehiculo_id ? Mopar::getOneVehiculo($solicitud->vehiculo_id) : json_decode('{"marca":"","modelo":"","ano":"","color":"","patente":"","nro_motor":""}');
 
 	$html = '
 	<!--
@@ -53,7 +43,7 @@ if (user_can( $current_user, 'administrator' )) {
 	<table style="width: 590px;">
 		<tr>
 			<td style="width: 590px;">
-				<h1 style="text-align: center">'. $titulo_ot .' n&deg;000'.$ot->id.'</h1>
+				<h1 style="text-align: center">Solicitud de servicio n&deg;000'.$solicitud->id.'</h1>
 			</td>
 		</tr>
 	</table>
@@ -94,62 +84,66 @@ if (user_can( $current_user, 'administrator' )) {
 		</tr>
 	</table>
 	<br><br><br>
-	<table style="width: 590px;" border="1">
+	<table border="1">
 		<tr>
-			<td style="width: 480px; text-align: center;"> <strong>Descripción</strong> </td>
-			<td style="width: 110px; text-align: center;"> <strong>Valor</strong> </td>
+			<td style="width: 635px; text-align: center;"> <strong>solicitud</strong> </td>
 		</tr>';
 
-		$detalles = json_decode($ot->detalle);
-		foreach ($detalles->item as $key => $value) {
-
-			$html .= '
-			<tr>
-				<td style="text-align: left">' . $detalles->item[$key] . '</td>
-				<td style="text-align: right;"> $ ' . number_format($detalles->precio[$key],0,',','.') . '</td>
-			</tr>';
-		}
-
-		$observaciones = '' === $ot->observaciones ? '' : '<strong>Observaciones adicionales: </strong> <br>' . nl2br($ot->observaciones);
-		$solicitud_inicial = !isset($solicitud->solicitud) && '' !== $solicitud->solicitud ? '' : '<strong>Solicitud inicial: </strong> <br>' . nl2br($solicitud->solicitud);
-		$lastupdated = is_null($ot->upddate) ? '-' : date_format(date_create($ot->upddate), 'd/m/Y - H:i');
+		$lastupdated = is_null($solicitud->upddate) ? '-' : date_format(date_create($solicitud->upddate), 'd/m/Y - H:i');
 
 		$html .= '
 		<tr>
-			<td style="text-align: right;"><strong>TOTAL</strong></td>
-			<td style="text-align: right;"> $ ' . number_format($ot->valor,0,',','.') . '</td>
+			<td style="width: 635px; text-align: justify; white-space:pre-wrap"><strong>'. $solicitud->solicitud .'</strong></td>
 		</tr>
 	</table>
 	<br>
 	<table border="0" style="width: 590px">
 		<tr>
-			<td style="width: 590px">
-				<strong>Kilometraje: ' . $ot->km . '</strong><br>
-				'.$observaciones.'
-				<br>
-				'.$solicitud_inicial.'
-			</td>
-		</tr>
-		<tr>
 			<td>
-				<strong>Creado:</strong> '.date_format(date_create($ot->regdate), 'd/m/Y - H:i').'
+				<strong>Creado:</strong> '.date_format(date_create($solicitud->regdate), 'd/m/Y - H:i').'
 				<br>
 				<strong>Modificado:</strong> '. $lastupdated .'
 			</td>
 		</tr>
 	</table>
+	</page>';
+
+	$page_2 = '
+	<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
+	    <br><br><br><br><br><br><br><br>
+	    <div style="text-align:center">
+	        <img src="https://www.doctormopar.com/wp-content/uploads/2023/10/Screen-Shot-2023-10-13-at-16.27.35.png">
+	    </div>
+	    <br><br><br><br><br><br><br><br>
+	    <hr>
+	    <br><br><br><hr>
+	    <br><br><br><hr>
+	    <br><br><br><hr>
+	    <br><br><br><br><br><br><br><br>
+	    <table style="width: 590px;">
+	        <tr>
+	            <td style="width: 196px; text-align: center;">
+	                <hr>
+	                DOCTOR MOPAR
+	            </td>
+	            <td style="width: 196px; text-align: center;">&nbsp;</td>
+	            <td style="width: 196px; text-align: center;">
+	                <hr>
+	                '. $cliente->nombres . ' ' . $cliente->apellidoPaterno .'<br>
+	                (Customer)
+	            </td>
+	        </tr>
+	    </table>
 	</page>
 	';
-
-
-	
+    if (2 == $solicitud->estado) $html .= $page_2;
 
 	
+
 	require_once('html2pdf/html2pdf.class.php');
     $html2pdf = new HTML2PDF($orientation,'LETTER','es');
     $html2pdf->WriteHTML($html);
-    $html2pdf->Output( $titulo_pdf . '_000'. $ot->id .'.pdf');
-
+    $html2pdf->Output( $titulo_pdf . '_000'. $solicitud->id .'.pdf');
 }
 
 ?>
