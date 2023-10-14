@@ -23,7 +23,7 @@ $updated = false;
 				<?php foreach ($solicituds as $solicitud) : ?>
 					<tr data-regid="<?php echo $solicitud->id; ?>">
 						<td data-regid="<?php echo $solicitud->id; ?>"> <?php echo $solicitud->id; ?> </td>
-						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id) ?> </td>
+						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id, false) ?> </td>
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td class="text-center" style="white-space: nowrap;">
 							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar Solicitud"><i class="fa fa-pencil"></i></button>
@@ -237,7 +237,9 @@ $updated = false;
 		});
 
 		$('#tabla_solicituds').DataTable({
-			"ordering": false
+			order: [
+				[1, 'asc']
+			]
 		});
 	});
 </script>
