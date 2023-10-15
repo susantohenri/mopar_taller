@@ -103,11 +103,11 @@ if( $_POST ){
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
 					<td data-estado="<?php echo $ot->estado; ?>" class="text-center align-middle">
 						<?php if (1 == $ot->estado): ?>
-							<a class="btnComplete">
+							<a>
 								<i class="fa fa-circle text-danger"></i>
 							</a>
 						<?php elseif(2 == $ot->estado): ?>
-							<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>">
+							<a>
 								<i class="fa fa-circle text-success"></i>
 							</a>
 						<?php endif; ?>

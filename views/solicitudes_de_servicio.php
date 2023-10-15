@@ -61,11 +61,11 @@ if ($_POST) {
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td data-estado="<?php echo $solicitud->estado; ?>" class="text-center align-middle">
 							<?php if (1 == $solicitud->estado) : ?>
-								<a class="btnComplete">
+								<a>
 									<i class="fa fa-circle text-danger"></i>
 								</a>
 							<?php elseif (in_array($solicitud->estado, [2, 5])) : ?>
-								<a target="_blank" href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>">
+								<a>
 									<i class="fa fa-circle text-success"></i>
 								</a>
 							<?php endif; ?>
