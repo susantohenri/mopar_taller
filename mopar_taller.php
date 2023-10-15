@@ -298,12 +298,20 @@ function eliminar_solicitud_callback(){
 }
 
 function completar_ot_callback(){
-	global $wpdb;
-	$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
-	$wpdb->update('solicitud', ['estado' => 5], ['ot_id' => $_POST['regid']]);
-	$json = [
-		'status' => 'OK'
-	];
+	$solicitud = Mopar::getOneSolicitudByOtId($_POST['regid']);
+	if (3 == $solicitud->estado) {
+		$json = [
+			'status' => 'ERROR',
+			'message' => 'Esta cotizacion no tiene una orden de ingreso creada'
+		];
+	} else {
+		global $wpdb;
+		$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
+		$wpdb->update('solicitud', ['estado' => 5], ['ot_id' => $_POST['regid']]);
+		$json = [
+			'status' => 'OK'
+		];
+	}
 
 	echo json_encode($json);
 	exit();  
