@@ -116,7 +116,7 @@ if( $_POST ){
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
 						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-						<button class="btn btn-warning btnProceed" data-toggle="tooltip" title="Entregar Vehículo"><i class="fa fa-list"></i></button>
+						<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Entregar Vehículo"><i class="fa fa-list"></i></button>
 					</td>
 				</tr>
 				<?php endforeach; ?>
