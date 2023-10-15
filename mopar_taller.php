@@ -724,7 +724,7 @@ class Mopar{
 
 	public static function getSolicitudsDeServicioso(){
 		global $wpdb;
-		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,5) ORDER BY id DESC');
+		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,3,4,5) ORDER BY id DESC');
 
     	return $solicituds;
 	}
