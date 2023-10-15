@@ -392,6 +392,11 @@ function proceed_solicitud_without_ingreso_callback(){
 			'status' => 'ERROR',
 			'message' => 'La creación de esta cotización debe hacerse a través del menu Orden de Ingreso'
 		];
+	} else if (0 == $solicitud->vehiculo_id) {
+		$json = [
+			'status' => 'ERROR',
+			'message' => 'Antes de continuar debe completar la informacion de esta Solicitud de Servicio'
+		];
 	} else {
 		$wpdb->insert('ot', [
 			'cliente_id' => $solicitud->cliente_id,
@@ -906,7 +911,3 @@ class Mopar{
 
 
 }
-
-
-
-?>
