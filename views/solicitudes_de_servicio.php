@@ -64,7 +64,11 @@ if ($_POST) {
 								<a>
 									<i class="fa fa-circle text-danger"></i>
 								</a>
-							<?php elseif (in_array($solicitud->estado, [2, 3, 4, 5])) : ?>
+							<?php elseif (in_array($solicitud->estado, [3])) : ?>
+								<a>
+									<i class="fa fa-circle text-warning"></i>
+								</a>
+							<?php elseif (in_array($solicitud->estado, [2, 4, 5])) : ?>
 								<a>
 									<i class="fa fa-circle text-success"></i>
 								</a>
