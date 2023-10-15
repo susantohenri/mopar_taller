@@ -34,8 +34,6 @@ if ($_POST) {
 
 
 	$array_insert = [
-		'cliente_id' => $_POST['cliente'],
-		'vehiculo_id' => $_POST['vehiculo'],
 		'titulo' => $_POST['titulo'],
 		'detalle' => json_encode($_POST['detalle']),
 		'valor' => $_POST['valor'],
@@ -44,6 +42,8 @@ if ($_POST) {
 		'observaciones' => $_POST['observaciones'],
 		'archivo' => $archivo
 	];
+	if (isset($_POST['cliente'])) $array_insert['cliente_id'] = $_POST['cliente'];
+	if (isset($_POST['vehiculo'])) $array_insert['vehiculo_id'] = $_POST['vehiculo'];
 
 	if ($_POST['action'] == 'insertar_ot') {
 		if ($wpdb->insert('ot', $array_insert)) {
