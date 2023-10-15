@@ -39,6 +39,7 @@ if ($_POST) {
 					<th>#</th>
 					<th> Cliente </th>
 					<th> Vehiculo </th>
+					<th> Estado </th>
 					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
@@ -48,6 +49,13 @@ if ($_POST) {
 						<td data-regid="<?php echo $solicitud->id; ?>"> <?php echo $solicitud->id; ?> </td>
 						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id, false) ?> </td>
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
+						<td data-estado="<?php echo $solicitud->estado; ?>" class="text-center align-middle">
+							<?php if (3 == $solicitud->estado) : ?>
+								<a>
+									<i class="fa fa-circle text-warning"></i>
+								</a>
+							<?php endif; ?>
+						</td>
 						<td class="text-center" style="white-space: nowrap;">
 							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
