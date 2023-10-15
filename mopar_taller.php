@@ -739,7 +739,7 @@ class Mopar{
 
 	public static function getOrdenDeIngreso(){
 		global $wpdb;
-    	$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (2,3) ORDER BY id DESC');
+		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (2,3,4) ORDER BY id DESC');
 
     	return $solicituds;
 	}

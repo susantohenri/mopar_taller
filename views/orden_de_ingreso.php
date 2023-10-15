@@ -54,6 +54,10 @@ if ($_POST) {
 								<a>
 									<i class="fa fa-circle text-warning"></i>
 								</a>
+							<?php elseif (4 == $solicitud->estado) : ?>
+								<a>
+									<i class="fa fa-circle text-success"></i>
+								</a>
 							<?php endif; ?>
 						</td>
 						<td class="text-center" style="white-space: nowrap;">
