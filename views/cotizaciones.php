@@ -103,6 +103,10 @@ if ($_POST) {
 								<a>
 									<i class="fa fa-circle text-warning"></i>
 								</a>
+							<?php elseif (4 == $ot->solicitud_estado) : ?>
+								<a>
+									<i class="fa fa-circle text-danger"></i>
+								</a>
 							<?php elseif (1 == $ot->estado) : ?>
 								<a>
 									<i class="fa fa-circle text-danger"></i>
