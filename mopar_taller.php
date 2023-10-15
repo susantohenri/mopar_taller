@@ -366,11 +366,42 @@ function proceed_solicitud_callback(){
 		'observaciones' => ''
 	]);
 
-	$wpdb->update('solicitud', ['estado' => 3, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
+	$wpdb->update('solicitud', ['estado' => 4, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
 
 	$json = [
 		'status' => 'OK'
 	];
+
+	echo json_encode($json);
+	exit();
+}
+
+function proceed_solicitud_without_ingreso_callback(){
+	global $wpdb;
+	$solicitud = Mopar::getOneSolicitud($_POST['regid']);
+	if (1 != $solicitud->estado) {
+		$json = [
+			'status' => 'ERROR',
+			'message' => 'La creación de esta cotización debe hacerse a través del menu Orden de Ingreso'
+		];
+	} else {
+		$wpdb->insert('ot', [
+			'cliente_id' => $solicitud->cliente_id,
+			'vehiculo_id' => $solicitud->vehiculo_id,
+			'titulo' => '',
+			'detalle' => json_encode([]),
+			'valor' => '',
+			'km' => '',
+			'estado' => 1,
+			'observaciones' => ''
+		]);
+
+		$wpdb->update('solicitud', ['estado' => 3, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
+
+		$json = [
+			'status' => 'OK'
+		];
+	}
 
 	echo json_encode($json);
 	exit();
@@ -630,6 +661,7 @@ add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
 add_action('wp_ajax_completar_solicitud','completar_solicitud_callback');
 add_action('wp_ajax_uncompletar_solicitud','uncompletar_solicitud_callback');
 add_action('wp_ajax_proceed_solicitud','proceed_solicitud_callback');
+add_action('wp_ajax_proceed_solicitud_without_ingreso','proceed_solicitud_without_ingreso_callback');
 add_action('wp_ajax_get_vehiculos_by_cliente','get_vehiculos_by_cliente_callback');
 add_action('wp_ajax_get_ot','get_ot_callback');
 add_action('wp_ajax_get_solicitud','get_solicitud_callback');
