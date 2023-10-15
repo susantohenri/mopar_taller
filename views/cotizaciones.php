@@ -102,7 +102,11 @@ if( $_POST ){
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
 					<td data-estado="<?php echo $ot->estado; ?>" class="text-center align-middle">
-						<?php if (1 == $ot->estado): ?>
+						<?php if (3 == $ot->solicitud_estado): ?>
+							<a>
+								<i class="fa fa-circle text-warning"></i>
+							</a>
+						<?php elseif (1 == $ot->estado): ?>
 							<a>
 								<i class="fa fa-circle text-danger"></i>
 							</a>
