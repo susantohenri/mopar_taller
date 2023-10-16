@@ -74,7 +74,11 @@ if ($_POST) {
 						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id, false) ?> </td>
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td data-estado="<?php echo $solicitud->estado; ?>" class="text-center align-middle">
-							<?php if (1 == $solicitud->estado) : ?>
+							<?php if ('' !== $solicitud->motivo) : ?>
+								<a>
+									<i class="fa fa-times text-danger"></i>
+								</a>
+							<?php elseif (1 == $solicitud->estado) : ?>
 								<a>
 									<i class="fa fa-circle text-danger"></i>
 								</a>
@@ -241,7 +245,7 @@ if ($_POST) {
 								<div class="input-group-prepend">
 									<span class="input-group-text">Motivo</span>
 								</div>
-								<textarea class="form-control" name="motivo"></textarea>
+								<textarea class="form-control" name="motivo" required></textarea>
 							</div>
 						</div>
 					</div>
