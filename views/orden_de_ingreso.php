@@ -69,7 +69,7 @@ if ($_POST) {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Datos de la Solicitud</h5>
+					<h5 class="modal-title">Datos de la Orden de Ingreso</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -193,8 +193,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Eliminar Solicitud!',
-				content: '¿Desea eliminar la Solicitud seleccionada?',
+				title: 'Eliminar Orden de ingreso?',
+				content: '¿Desea eliminar la Orden de ingreso seleccionada?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {
@@ -216,7 +216,7 @@ if ($_POST) {
 									$.alert({
 										title: false,
 										type: 'green',
-										content: 'Solicitud borrado correctamente'
+										content: 'Procesando...'
 									});
 									tr.fadeOut(400);
 								}
@@ -232,8 +232,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Proceed Solicitud!',
-				content: '¿Desea convertir esta Orden de Ingreso en una Cotización?',
+				title: 'Iniciar Cotización',
+				content: '¿Desea usar los datos de esta Orden de Ingreso para hacer una Cotización?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {

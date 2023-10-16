@@ -77,9 +77,11 @@ if ($_POST) {
 						<td class="text-center" style="white-space: nowrap;">
 							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
-							<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+							<!--<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>-->
 							<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-car"></i></button>
 							<button class="btn btn-warning btnProceedWithoutIngreso" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
+							<button class="btn btn-success" data-toggle="tooltip" title="Agendar"><i class="fa fa-check"></i></button>
+							<button class="btn btn-danger" data-toggle="tooltip" title="Descartar"><i class="fa fa-times"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -319,8 +321,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Completar Solicitud!',
-				content: '¿Quiere completar el trabajo para esta cotizacion?',
+				title: 'Completar Solicitud',
+				content: '¿Quiere ingresar a taller esta solicitud?',
 				type: 'green',
 				icon: 'fa fa-success',
 				buttons: {
@@ -366,8 +368,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Proceed Solicitud!',
-				content: '¿Desea convertir esta Orden de Ingreso en una Cotización?',
+				title: 'Completar Solicitud',
+				content: '¿Desea hacer una Cotización para esta solicitud?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {

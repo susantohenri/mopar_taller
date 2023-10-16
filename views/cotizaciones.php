@@ -140,7 +140,7 @@ if ($_POST) {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Datos de la OT</h5>
+					<h5 class="modal-title">Datos de la Cotización</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -260,7 +260,7 @@ if ($_POST) {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Datos de la OT</h5>
+					<h5 class="modal-title">Datos de la Cotización</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -536,8 +536,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Eliminar OT!',
-				content: '¿Desea eliminar la ot seleccionada?',
+				title: 'Eliminar Cotización!',
+				content: '¿Desea eliminar la cotizacion seleccionada?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {
@@ -575,7 +575,7 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Completar OT!',
+				title: 'Entrega del Vehículo',
 				content: '¿Quiere completar el trabajo para esta cotizacion?',
 				type: 'green',
 				icon: 'fa fa-success',

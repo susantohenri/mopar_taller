@@ -118,7 +118,7 @@ if( $_POST ){
 		<div class="modal-dialog modal-lg">
 	    	<div class="modal-content">
 	      		<div class="modal-header">
-	        		<h5 class="modal-title">Datos de la OT</h5>
+	        		<h5 class="modal-title">Datos del trabajo realizado</h5>
 	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          			<span aria-hidden="true">&times;</span>
 	        		</button>
@@ -238,7 +238,7 @@ if( $_POST ){
 		<div class="modal-dialog modal-lg">
 	    	<div class="modal-content">
 	      		<div class="modal-header">
-	        		<h5 class="modal-title">Datos de la OT</h5>
+	        		<h5 class="modal-title">Datos del trabajo realizado</h5>
 	        		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          			<span aria-hidden="true">&times;</span>
 	        		</button>
@@ -516,8 +516,8 @@ $(document).ready(function(){
 		regid = tr.data('regid');
 
 		$.confirm({
-		    title: 'Eliminar OT!',
-		    content: '¿Desea eliminar la ot seleccionada?',
+		    title: 'Eliminar Trabajo?',
+		    content: '¿Desea eliminar este trabajo realizado?',
 			type: 'red',
 			icon: 'fa fa-warning',
 		    buttons: {
