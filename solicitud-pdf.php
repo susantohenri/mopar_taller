@@ -92,7 +92,7 @@ if (user_can( $current_user, 'administrator' )) {
 
 		$lastupdated = is_null($solicitud->upddate) ? '-' : date_format(date_create($solicitud->upddate), 'd/m/Y - H:i');
 		$motivo = '' === $solicitud->motivo ? '' : '<tr><td><strong>Motivo:</strong> '.$solicitud->motivo.'</td></tr>';
-		$fecha = is_null($solicitud->fecha) ? '' : '<tr><td><strong>Fecha:</strong> '.$solicitud->fecha.':'.$solicitud->hora.'</td></tr>';
+		$fecha = is_null($solicitud->fecha) ? '' : '<tr><td><strong>Fecha Agendada:</strong> '.date_format(date_create("{$solicitud->fecha} {$solicitud->hora}"), 'd/m/Y H:i') .'</td></tr>';
 
 		$html .= '
 		<tr>
