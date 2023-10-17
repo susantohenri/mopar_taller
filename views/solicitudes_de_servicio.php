@@ -548,7 +548,11 @@ if ($_POST) {
 
 
 		$('#tabla_solicituds').DataTable({
-			"ordering": false
+			"ordering": false,
+			"columnDefs": [{
+				"width": "20%",
+				"targets": 4
+			}]
 		});
 	});
 </script>
