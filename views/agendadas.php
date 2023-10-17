@@ -28,7 +28,7 @@ if ($_POST) {
 
 <div class="box pr-4">
 	<div class="box-header mb-4">
-		<h2 class="font-weight-light text-center text-muted float-left"> Orden de Ingreso </h2>
+		<h2 class="font-weight-light text-center text-muted float-left"> Solicitudes Agendadas </h2>
 		<div class="clearfix"></div>
 	</div>
 	<div class="box-body">
@@ -50,8 +50,7 @@ if ($_POST) {
 						<td class="text-center" style="white-space: nowrap;">
 							<button type="button" class="btn btn-success btnFecha" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
-							<button class="btn btn-danger btnUncomplete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-							<button class="btn btn-warning btnProceed" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
+							<button class="btn btn-warning btnCancelarCita" data-toggle="tooltip" title="Cancelar Cita"><i class="fa fa-reply"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -134,6 +133,45 @@ if ($_POST) {
 			$(".overlay").show();
 			e.preventDefault();
 			$("#formEditFecha")[0].submit();
+		});
+
+		$(".btnCancelarCita").click(function() {
+			tr = $(this).closest('tr');
+			regid = tr.data('regid');
+
+			$.confirm({
+				title: 'Cancelar Cita Solicitude Perdidas?',
+				content: '¿Desea Cancelar Cita la Solicitude Perdidas seleccionada?',
+				type: 'red',
+				icon: 'fa fa-warning',
+				buttons: {
+					NO: {
+						text: 'No',
+						btnClass: 'btn-red',
+					},
+					SI: {
+						text: 'Si',
+						btnClass: 'btn-green',
+						action: function() {
+							$.ajax({
+								type: 'POST',
+								url: '<?php echo admin_url('admin-ajax.php'); ?>',
+								dataType: 'json',
+								data: 'action=cancelar_cita_solicitud&regid=' + regid,
+								beforeSend: function() {},
+								success: function(json) {
+									$.alert({
+										title: false,
+										type: 'green',
+										content: 'Procesando...'
+									});
+									tr.fadeOut(400);
+								}
+							})
+						}
+					}
+				}
+			});
 		});
 
 		$('#tabla_solicituds').DataTable({

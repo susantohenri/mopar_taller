@@ -344,6 +344,17 @@ function restaurar_solicitud_callback(){
 	exit();
 }
 
+function cancelar_cita_solicitud_callback(){
+	global $wpdb;
+	$wpdb->update('solicitud', ['fecha' => null, 'hora' => '00:00:00'], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
+}
+
 function uncompletar_ot_callback(){
 	global $wpdb;
 	$wpdb->update('ot', ['estado' => 1], ['id' => $_POST['regid']]);
@@ -699,6 +710,7 @@ add_action('wp_ajax_eliminar_solicitud','eliminar_solicitud_callback');
 add_action('wp_ajax_completar_ot','completar_ot_callback');
 add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
 add_action('wp_ajax_restaurar_solicitud','restaurar_solicitud_callback');
+add_action('wp_ajax_cancelar_cita_solicitud','cancelar_cita_solicitud_callback');
 add_action('wp_ajax_completar_solicitud','completar_solicitud_callback');
 add_action('wp_ajax_uncompletar_solicitud','uncompletar_solicitud_callback');
 add_action('wp_ajax_proceed_solicitud','proceed_solicitud_callback');
