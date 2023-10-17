@@ -376,7 +376,7 @@ function completar_solicitud_callback(){
 			'message' => 'Antes de continuar debe completar la informacion de esta Solicitud de Servicio'
 		];
 	} else {
-		$wpdb->update('solicitud', ['estado' => 2], ['id' => $id]);
+		$wpdb->update('solicitud', ['estado' => 2, 'fecha' => null, 'hora' => '00:00:00'], ['id' => $id]);
 		$json = [
 			'status' => 'OK'
 		];
