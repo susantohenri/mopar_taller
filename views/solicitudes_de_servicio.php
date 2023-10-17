@@ -114,7 +114,6 @@ if ($_POST) {
 							<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
 							<!--<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>-->
-							<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-car"></i></button>
 							<button class="btn btn-warning btnProceedWithoutIngreso" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
 							<button class="btn btn-success btnFecha" data-toggle="tooltip" title="Agendar"><i class="fa fa-check"></i></button>
 							<button class="btn btn-danger btnMotivo" data-toggle="tooltip" title="Descartar"><i class="fa fa-times"></i></button>
@@ -428,53 +427,6 @@ if ($_POST) {
 										content: 'Solicitud borrado correctamente'
 									});
 									tr.fadeOut(400);
-								}
-							})
-						}
-					}
-				}
-			});
-		});
-
-		$(".btnComplete").click(function() {
-			tr = $(this).closest('tr');
-			regid = tr.data('regid');
-
-			$.confirm({
-				title: 'Completar Solicitud',
-				content: '¿Quiere ingresar a taller esta solicitud?',
-				type: 'green',
-				icon: 'fa fa-success',
-				buttons: {
-					NO: {
-						text: 'Cancelar',
-						btnClass: 'btn-red',
-					},
-					SI: {
-						text: 'Si',
-						btnClass: 'btn-green',
-						action: function() {
-							$.ajax({
-								type: 'POST',
-								url: '<?php echo admin_url('admin-ajax.php'); ?>',
-								dataType: 'json',
-								data: 'action=completar_solicitud&regid=' + regid,
-								beforeSend: function() {},
-								success: function(json) {
-									if (`ERROR` === json.status) {
-										$.alert({
-											title: false,
-											type: 'red',
-											content: json.message
-										});
-									} else {
-										$.alert({
-											title: false,
-											type: 'green',
-											content: 'Cotizacion borrada correctamente'
-										});
-										window.location.reload()
-									}
 								}
 							})
 						}
