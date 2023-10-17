@@ -44,6 +44,20 @@ if ($_POST) {
 			$updated = true;
 		}
 	}
+
+	if ($_POST['action'] == 'editar_fecha') {
+		$array_insert = ['fecha' => $_POST['fecha'], 'hora' => $_POST['hora']];
+		$before_update = (array) Mopar::getOneSolicitud($_POST['solicitud_id']);
+		$posted_attr = array_keys($array_insert);
+		$before_update = array_filter($before_update, function ($value, $attr) use ($posted_attr) {
+			return in_array($attr, $posted_attr);
+		}, ARRAY_FILTER_USE_BOTH);
+		if ($before_update !== $array_insert) $array_insert['upddate'] = date('Y-m-d H:i:s');
+
+		if ($wpdb->update('solicitud', $array_insert, ['id' => $_POST['solicitud_id']])) {
+			$updated = true;
+		}
+	}
 }
 ?>
 
@@ -98,7 +112,7 @@ if ($_POST) {
 							<!--<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>-->
 							<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-car"></i></button>
 							<button class="btn btn-warning btnProceedWithoutIngreso" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
-							<button class="btn btn-success" data-toggle="tooltip" title="Agendar"><i class="fa fa-check"></i></button>
+							<button class="btn btn-success btnFecha" data-toggle="tooltip" title="Agendar"><i class="fa fa-check"></i></button>
 							<button class="btn btn-danger btnMotivo" data-toggle="tooltip" title="Descartar"><i class="fa fa-times"></i></button>
 						</td>
 					</tr>
@@ -260,10 +274,55 @@ if ($_POST) {
 	</form>
 </div>
 
+<!-- EDITAR Fecha -->
+<div class="modal fade" id="modalEditFecha" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<form method="post" id="formEditFecha" enctype="multipart/form-data">
+		<input type="hidden" name="action" value="editar_fecha">
+		<input type="hidden" name="solicitud_id" value="">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Datos de la Fecha</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Fecha</span>
+								</div>
+								<input type="text" class="form-control" name="fecha" required>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Hora</span>
+								</div>
+								<input type="text" class="form-control" name="hora" required>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
+					<button type="submit" class="btn btn-success btnGuardar">Guardar <i class="fa fa-save"></i> </button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap4-datetimepicker@5.2.3/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@x.x.x/dist/select2-bootstrap4.min.css">
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap4-datetimepicker@5.2.3/build/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 	$(document).ready(function() {
 		$(`[name="cliente"]`).css(`display`, `none`).select2({
@@ -273,6 +332,8 @@ if ($_POST) {
 				url: `../wp-json/mopar-taller/v1/clientes`
 			}
 		})
+		$('[name="fecha"]').datetimepicker({format: `YYYY-MM-DD`})
+		$('[name="hora"]').datetimepicker({format: `LT`})
 
 		$(".btnEdit").click(function() {
 			solicitud_id = $(this).data('regid');
@@ -461,10 +522,20 @@ if ($_POST) {
 			});
 		});
 
-		jQuery(`.btnMotivo`).click(function() {
+		$(`.btnMotivo`).click(function() {
 			tr = $(this).closest('tr');
 			regid = tr.data('regid');
-			const modal = jQuery(`#modalEditMotivo`)
+			const modal = $(`#modalEditMotivo`)
+			modal.find(`textarea`).val(``)
+			modal.find(`[name="solicitud_id"]`).val(regid)
+			modal.modal(`show`)
+		})
+
+		$(`.btnFecha`).click(function() {
+			tr = $(this).closest('tr');
+			regid = tr.data('regid');
+			const modal = $(`#modalEditFecha`)
+			modal.find(`input[type="text"]`).val(``)
 			modal.find(`[name="solicitud_id"]`).val(regid)
 			modal.modal(`show`)
 		})
@@ -486,6 +557,12 @@ if ($_POST) {
 			$(".overlay").show();
 			e.preventDefault();
 			$("#formEditMotivo")[0].submit();
+		});
+
+		$("#formEditFecha").submit(function(e) {
+			$(".overlay").show();
+			e.preventDefault();
+			$("#formEditFecha")[0].submit();
 		});
 
 		<?php if ($inserted) { ?>
