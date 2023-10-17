@@ -24,6 +24,7 @@ function theme_options_panel(){
 add_action('admin_menu', 'theme_options_panel');
  
 function taller_home_func(){
+	$events = Mopar::getCalendarEvents();
 	include('views/home.php');	
 }
 
@@ -815,6 +816,19 @@ class Mopar{
 		$solicitud = $wpdb->get_row('SELECT * FROM solicitud WHERE ot_id = ' . $ot_id);
 
 		return $solicitud;
+	}
+
+	public static function getCalendarEvents() {
+		global $wpdb;
+		return $wpdb->get_results("
+			SELECT
+				CONCAT(clientes.nombres, ' ', clientes.apellidoPaterno, ' ', clientes.apellidoMaterno, IF(0 = solicitud.vehiculo_id, '', CONCAT(': ',vehiculos.marca, ' - ', vehiculos.modelo, ' - ', vehiculos.patente))) 'title'
+				, CONCAT(fecha, ' ', hora) 'start'
+			FROM solicitud
+				LEFT JOIN clientes ON solicitud.cliente_id = clientes.id
+				LEFT JOIN vehiculos ON solicitud.vehiculo_id = vehiculos.id
+			WHERE solicitud.fecha IS NOT NULL
+		");
 	}
 
 	public static function getOts(){
