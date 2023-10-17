@@ -88,7 +88,11 @@ if ($_POST) {
 						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id, false) ?> </td>
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td data-estado="<?php echo $solicitud->estado; ?>" class="text-center align-middle">
-							<?php if ('' !== $solicitud->motivo) : ?>
+							<?php if (!is_null($solicitud->fecha)) : ?>
+								<a>
+									<i class="fa fa-check text-success"></i>
+								</a>
+							<?php elseif ('' !== $solicitud->motivo) : ?>
 								<a>
 									<i class="fa fa-times text-danger"></i>
 								</a>
@@ -332,8 +336,12 @@ if ($_POST) {
 				url: `../wp-json/mopar-taller/v1/clientes`
 			}
 		})
-		$('[name="fecha"]').datetimepicker({format: `YYYY-MM-DD`})
-		$('[name="hora"]').datetimepicker({format: `LT`})
+		$('[name="fecha"]').datetimepicker({
+			format: `YYYY-MM-DD`
+		})
+		$('[name="hora"]').datetimepicker({
+			format: `LT`
+		})
 
 		$(".btnEdit").click(function() {
 			solicitud_id = $(this).data('regid');
