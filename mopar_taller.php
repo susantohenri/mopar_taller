@@ -15,6 +15,8 @@ function theme_options_panel(){
 	add_submenu_page( 'mopar-taller', 'Vehiculos', 'Vehiculos', 'manage_options', 'mopar-vehiculos', 'taller_vehiculos_func');
 	// add_submenu_page( 'mopar-taller', 'OT', 'OT', 'manage_options', 'mopar-ot', 'taller_ot_func');
 	add_submenu_page( 'mopar-taller', 'Solicitudes de Servicio', 'Solicitudes de Servicio', 'manage_options', 'mopar-solicitudes-de-servicio', 'taller_solicitudes_de_servicio_func');
+	add_submenu_page( 'mopar-taller', 'Solicitudes Perdidas', 'Solicitudes Perdidas', 'manage_options', 'mopar-perdidas', 'taller_perdidas_func');
+	add_submenu_page( 'mopar-taller', 'Solicitudes Agendadas', 'Solicitudes Agendadas', 'manage_options', 'mopar-agendadas', 'taller_agendadas_func');
 	add_submenu_page( 'mopar-taller', 'Ordenes de Ingreso', 'Ordenes de Ingreso', 'manage_options', 'mopar-orden-de-ingreso', 'taller_orden_de_ingreso_func');
 	add_submenu_page( 'mopar-taller', 'Cotizaciones', 'Cotizaciones', 'manage_options', 'mopar-cotizaciones', 'taller_cotizaciones_func');
 	add_submenu_page( 'mopar-taller', 'Trabajos Realizados', 'Trabajos Realizados', 'manage_options', 'mopar-trabajos-realizado', 'taller_trabajos_realizado_func');
@@ -79,6 +81,20 @@ function taller_orden_de_ingreso_func(){
 	$clientes = Mopar::getClientes();
 	$solicituds = Mopar::getOrdenDeIngreso();
 	include('views/orden_de_ingreso.php');
+}
+
+function taller_perdidas_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+	$solicituds = Mopar::getPerdidas();
+	include('views/perdidas.php');
+}
+
+function taller_agendadas_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+	$solicituds = Mopar::getAgendadas();
+	include('views/agendadas.php');
 }
 
 
@@ -315,6 +331,17 @@ function completar_ot_callback(){
 
 	echo json_encode($json);
 	exit();  
+}
+
+function restaurar_solicitud_callback(){
+	global $wpdb;
+	$wpdb->update('solicitud', ['motivo' => ''], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
 }
 
 function uncompletar_ot_callback(){
@@ -671,6 +698,7 @@ add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
 add_action('wp_ajax_eliminar_solicitud','eliminar_solicitud_callback');
 add_action('wp_ajax_completar_ot','completar_ot_callback');
 add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
+add_action('wp_ajax_restaurar_solicitud','restaurar_solicitud_callback');
 add_action('wp_ajax_completar_solicitud','completar_solicitud_callback');
 add_action('wp_ajax_uncompletar_solicitud','uncompletar_solicitud_callback');
 add_action('wp_ajax_proceed_solicitud','proceed_solicitud_callback');
@@ -747,6 +775,20 @@ class Mopar{
 		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (2,4) ORDER BY id DESC');
 
     	return $solicituds;
+	}
+
+	public static function getPerdidas(){
+		global $wpdb;
+		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE "" <> motivo ORDER BY id DESC');
+
+		return $solicituds;
+	}
+
+	public static function getAgendadas(){
+		global $wpdb;
+		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE fecha IS NOT NULL ORDER BY id DESC');
+
+		return $solicituds;
 	}
 
 	public static function getOneSolicitud($id){
