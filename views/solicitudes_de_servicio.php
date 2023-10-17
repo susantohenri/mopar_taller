@@ -339,7 +339,17 @@ if ($_POST) {
 			format: `YYYY-MM-DD`
 		})
 		$('[name="hora"]').datetimepicker({
-			format: `LT`
+			format: `LT`,
+			icons: {
+				time: `fa fa-clock-o`,
+				date: `fa fa-calendar`,
+				up: `fa fa-arrow-up`,
+				down: `fa fa-arrow-down`,
+				previous: `fa fa-chevron-left`,
+				next: `fa fa-chevron-right`,
+				today: `fa fa-clock-o`,
+				clear: `fa fa-trash-o`
+			}
 		})
 
 		$(".btnEdit").click(function() {
