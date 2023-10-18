@@ -822,7 +822,7 @@ class Mopar{
 		global $wpdb;
 		return $wpdb->get_results("
 			SELECT
-				CONCAT(clientes.nombres, ' ', clientes.apellidoPaterno, ' ', clientes.apellidoMaterno, IF(0 = solicitud.vehiculo_id, '', CONCAT(': ',vehiculos.marca, ' - ', vehiculos.modelo, ' - ', vehiculos.patente))) 'title'
+				CONCAT(clientes.nombres, ' ', clientes.apellidoPaterno) 'title'
 				, CONCAT(fecha, ' ', hora) 'start'
 			FROM solicitud
 				LEFT JOIN clientes ON solicitud.cliente_id = clientes.id
