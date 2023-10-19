@@ -14,7 +14,7 @@ if (user_can( $current_user, 'administrator' )) {
 		$titulo_ot = 'Cotización';
 		$titulo_pdf = 'cotizacion';
 	} else {
-		$titulo_ot = 'Orden de Trabajo';
+		$titulo_ot = 'Trabajo Realizado';
 		$titulo_pdf = 'ot';
 	}
 

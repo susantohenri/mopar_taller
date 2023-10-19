@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $inserted = false;
 $updated = false;
 ?>
@@ -27,7 +27,7 @@ $updated = false;
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td class="text-center" style="white-space: nowrap;">
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
-							<button class="btn btn-danger btnRestaurar" data-toggle="tooltip" title="Restaurar Solicitude"><i class="fa fa-reply"></i></button>
+							<button class="btn btn-danger btnRestaurar" data-toggle="tooltip" title="Restaurar"><i class="fa fa-reply"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -44,8 +44,8 @@ $updated = false;
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Restaurar Solicitude Perdidas?',
-				content: '¿Desea restaurar la Solicitude Perdidas seleccionada?',
+				title: 'Restaurar Solicitud?',
+				content: '¿Desea restaurar la solicitud de servicio de esta solicitud perdida?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {
@@ -67,7 +67,7 @@ $updated = false;
 									$.alert({
 										title: false,
 										type: 'green',
-										content: 'Procesando...'
+										content: 'Solicitud restaurada'
 									});
 									tr.fadeOut(400);
 								}

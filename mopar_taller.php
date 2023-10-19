@@ -137,7 +137,7 @@ function insertar_cliente_callback(){
 	$wpdb->insert('clientes',$array_insert);
 
 	//Enviar por correo la pass
-	$body = "Hola " . $_POST['nombres'] . "\n\nHas sido creado como cliente en el taller Doctor Mopar y se te ha creado una nueva contraseña para poder acceder y ver el historial de tu vehiculo.\n\n\nTu nueva contraseña es: " . $pass . "\n\n";
+	$body = "Hola " . $_POST['nombres'] . "\n\nBienvenido! Has sido creado como cliente en el taller Doctor Mopar, se te ha creado una nueva contraseña para acceder a nuestro portal de clientes.\n\n\nTu nueva contraseña es: " . $pass . "\n\n";
 	$body .= "https://www.doctormopar.com/clientes/";
 	mail($_POST['email'].",j.basso@me.com",'Nueva contraseña para entrar a DoctorMopar',$body);
 

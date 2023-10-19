@@ -50,7 +50,7 @@ if ($_POST) {
 						<td class="text-center" style="white-space: nowrap;">
 							<button type="button" class="btn btn-success btnFecha" data-regid="<?php echo $solicitud->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 							<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/solicitud-pdf.php?id=<?php echo $solicitud->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
-							<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-car"></i></button>
+							<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Ingresar a Taller"><i class="fa fa-wrench"></i></button>
 							<button class="btn btn-danger btnCancelarCita" data-toggle="tooltip" title="Cancelar Cita"><i class="fa fa-reply"></i></button>
 						</td>
 					</tr>
@@ -68,7 +68,7 @@ if ($_POST) {
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Datos de la Fecha</h5>
+					<h5 class="modal-title">Editar la fecha agendada</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -141,8 +141,8 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Cancelar Cita Solicitude Perdidas?',
-				content: '¿Desea Cancelar Cita la Solicitude Perdidas seleccionada?',
+				title: 'Cancelar Cita?',
+				content: '¿Desea Cancelar la cita para esta solicitud y regresarla al menú solicitudes de servicio?',
 				type: 'red',
 				icon: 'fa fa-warning',
 				buttons: {
@@ -164,7 +164,7 @@ if ($_POST) {
 									$.alert({
 										title: false,
 										type: 'green',
-										content: 'Procesando...'
+										content: 'Solicitud restaurada'
 									});
 									tr.fadeOut(400);
 								}
@@ -210,7 +210,7 @@ if ($_POST) {
 										$.alert({
 											title: false,
 											type: 'green',
-											content: 'Cotizacion borrada correctamente'
+											content: 'Procesando...'
 										});
 										window.location.reload()
 									}

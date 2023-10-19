@@ -100,6 +100,7 @@ if( $_POST ){
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
 						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
+						<button class="btn btn-warning" data-toggle="tooltip" title="Entregar Vehículo"><i class="fa fa-car"></i></button>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -540,7 +541,7 @@ $(document).ready(function(){
 		            			$.alert({
 		            				title: false,
 		            				type: 'green',
-		            				content: 'OT borrado correctamente'
+		            				content: 'El trabajo realizado ha sido borrado'
 		            			});
 		            			tr.fadeOut(400);
 		            		}

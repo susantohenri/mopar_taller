@@ -31,7 +31,7 @@ if (user_can( $current_user, 'administrator' )) {
 				<img style="width: 200px; height: auto;" src="https://www.doctormopar.com/wp-content/uploads/2019/02/mopar.png">
 			</td>
 			<td style="width: 295px; text-align: center">
-				<h3 style="margin-bottom: 10px">Doctor Mopar Taller</h3>
+				<h3 style="margin-bottom: 10px">Taller Doctor Mopar</h3>
 				<h4 style="margin: 0; font-weight: lighter">
 					Los Cerezos 375, Ñuñoa <br>
 					Región Metropolitana <br>
@@ -62,7 +62,7 @@ if (user_can( $current_user, 'administrator' )) {
 				<table class="no_padding">
 					<tr>
 						<td><strong>Marca/Modelo: </strong></td>
-						<td>' . $vehiculo->marca . '/' . $vehiculo->modelo . '</td>
+						<td>' . $vehiculo->marca . ' / ' . $vehiculo->modelo . '</td>
 					</tr>
 					<tr>
 						<td><strong>A&ntilde;o: </strong></td>
@@ -115,16 +115,14 @@ if (user_can( $current_user, 'administrator' )) {
 
 	$page_2 = '
 	<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
-	    <br><br><br><br><br><br><br><br>
+	    
 	    <div style="text-align:center">
-	        <img src="https://www.doctormopar.com/wp-content/uploads/2023/10/Screen-Shot-2023-10-13-at-16.27.35.png">
+	        <img src=https://www.doctormopar.com/wp-content/uploads/2023/10/jeep-compass-4.png">
 	    </div>
-	    <br><br><br><br><br><br><br><br>
-	    <hr>
-	    <br><br><br><hr>
-	    <br><br><br><hr>
-	    <br><br><br><hr>
-	    <br><br><br><br><br><br><br><br>
+	    <br><br>
+	    
+	    <br><br><br>
+	    <br><br><br><br>
 	    <table style="width: 590px;">
 	        <tr>
 	            <td style="width: 196px; text-align: center;">
@@ -135,7 +133,7 @@ if (user_can( $current_user, 'administrator' )) {
 	            <td style="width: 196px; text-align: center;">
 	                <hr>
 	                '. $cliente->nombres . ' ' . $cliente->apellidoPaterno .'<br>
-	                (Customer)
+	                (Cliente)
 	            </td>
 	        </tr>
 	    </table>
