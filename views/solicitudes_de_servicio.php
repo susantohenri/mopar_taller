@@ -328,6 +328,10 @@ if ($_POST) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap4-datetimepicker@5.2.3/build/js/bootstrap-datetimepicker.min.js"></script>
 <script>
 	$(document).ready(function() {
+		const url_retrieve_id = (new URLSearchParams(window.location.search)).get(`id`)
+		$(`#modalEditSolicitud`).on(`hidden.bs.modal`, () => {
+			if (null !== url_retrieve_id) location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=mopar-solicitudes-de-servicio';
+		});
 		$(`[name="cliente"]`).css(`display`, `none`).select2({
 			theme: `bootstrap4`,
 			minimumInputLength: 3,
@@ -381,6 +385,10 @@ if ($_POST) {
 				}
 			})
 		})
+
+		if (null !== url_retrieve_id) {
+			$(`#tabla_solicituds tbody tr[data-regid=${url_retrieve_id}] .btnEdit`).click()
+		}
 
 		if (location.hash == "#new") {
 			$('#modalNewOT').modal('show');

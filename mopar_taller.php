@@ -820,15 +820,19 @@ class Mopar{
 
 	public static function getCalendarEvents() {
 		global $wpdb;
-		return $wpdb->get_results("
+		return array_map(function ($record) {
+			$record->url = site_url("wp-admin/admin.php?page=mopar-solicitudes-de-servicio&id=$record->id");
+			return $record;
+		}, $wpdb->get_results("
 			SELECT
-				CONCAT(clientes.nombres, ' ', clientes.apellidoPaterno) 'title'
+				solicitud.id
+				, CONCAT(clientes.nombres, ' ', clientes.apellidoPaterno) 'title'
 				, CONCAT(fecha, ' ', hora) 'start'
 			FROM solicitud
 				LEFT JOIN clientes ON solicitud.cliente_id = clientes.id
 				LEFT JOIN vehiculos ON solicitud.vehiculo_id = vehiculos.id
 			WHERE solicitud.fecha IS NOT NULL
-		");
+		"));
 	}
 
 	public static function getOts(){
