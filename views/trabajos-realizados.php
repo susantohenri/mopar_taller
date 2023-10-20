@@ -84,6 +84,7 @@ if( $_POST ){
 					<th> Vehiculo </th>
 					<th> Valor Total </th>
 					<th> Km. </th>
+					<th> Estado </th>
 					<th class="text-center">Acciones</th>
 				</tr>
 			</thead>
@@ -96,11 +97,22 @@ if( $_POST ){
 					<td data-vehiculo="<?php echo $ot->vehiculo_id; ?>"> <?php echo Mopar::getNombreVehiculo($ot->vehiculo_id) ?> </td>
 					<td data-valor="<?php echo $ot->valor; ?>"> $ <?php echo number_format($ot->valor,0,',','.') ?> </td>
 					<td data-km="<?php echo $ot->km; ?>"> <?php echo $ot->km; ?> </td>
+					<td class="text-center align-middle">
+						<?php if (0 == $ot->entregar) : ?>
+							<a>
+								<i class="fa fa-circle text-danger"></i>
+							</a>
+						<?php elseif (1 == $ot->entregar) : ?>
+							<a>
+								<i class="fa fa-circle text-success"></i>
+							</a>
+						<?php endif; ?>
+					</td>
 					<td class="text-center" style="white-space: nowrap;">
 						<button type="button" class="btn btn-success btnEdit" data-regid="<?php echo $ot->id; ?>" data-toggle="tooltip" title="Editar"><i class="fa fa-pencil"></i></button>
 						<a href="<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/pdf.php?id=<?php echo $ot->id; ?>" target="_blank" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
 						<button class="btn btn-danger btnDelete" data-toggle="tooltip" title="Eliminar"><i class="fa fa-trash-o"></i></button>
-						<button class="btn btn-warning" data-toggle="tooltip" title="Entregar Vehículo"><i class="fa fa-car"></i></button>
+						<button class="btn btn-warning btnComplete" data-toggle="tooltip" title="Entregar Vehículo"><i class="fa fa-car"></i></button>
 					</td>
 				</tr>
 				<?php endforeach; ?>
@@ -552,7 +564,52 @@ $(document).ready(function(){
 		});
 	});
 
+	$(".btnComplete").click(function() {
+		tr = $(this).closest('tr');
+		regid = tr.data('regid');
 
+		$.confirm({
+			title: 'Entrega del Vehículo',
+			content: '¿Quiere completar el trabajo para esta realizado?',
+			type: 'green',
+			icon: 'fa fa-success',
+			buttons: {
+				NO: {
+					text: 'Cancelar',
+					btnClass: 'btn-red',
+				},
+				SI: {
+					text: 'Si',
+					btnClass: 'btn-green',
+					action: function() {
+						$.ajax({
+							type: 'POST',
+							url: '<?php echo admin_url('admin-ajax.php'); ?>',
+							dataType: 'json',
+							data: 'action=completar_realizados&regid=' + regid,
+							beforeSend: function() {},
+							success: function(json) {
+								if (`ERROR` === json.status) {
+									$.alert({
+										title: false,
+										type: 'red',
+										content: json.message
+									});
+								} else {
+									$.alert({
+										title: false,
+										type: 'green',
+										content: 'Realizado borrada correctamente'
+									});
+									window.location.reload()
+								}
+							}
+						})
+					}
+				}
+			}
+		});
+	});
 
 	$("#formNuevoOT").submit(function(e){
 		$(".overlay").show();

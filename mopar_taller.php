@@ -314,6 +314,17 @@ function eliminar_solicitud_callback(){
 	exit();  
 }
 
+function completar_realizados_callback(){
+	global $wpdb;
+	$wpdb->update('ot', ['entregar' => 1], ['id' => $_POST['regid']]);
+	$json = [
+		'status' => 'OK'
+	];
+
+	echo json_encode($json);
+	exit();
+}
+
 function completar_ot_callback(){
 	$solicitud = Mopar::getOneSolicitudByOtId($_POST['regid']);
 	if (3 == $solicitud->estado) {
@@ -710,6 +721,7 @@ add_action('wp_ajax_eliminar_ot','eliminar_ot_callback');
 add_action('wp_ajax_eliminar_solicitud','eliminar_solicitud_callback');
 add_action('wp_ajax_completar_ot','completar_ot_callback');
 add_action('wp_ajax_uncompletar_ot','uncompletar_ot_callback');
+add_action('wp_ajax_completar_realizados','completar_realizados_callback');
 add_action('wp_ajax_restaurar_solicitud','restaurar_solicitud_callback');
 add_action('wp_ajax_cancelar_cita_solicitud','cancelar_cita_solicitud_callback');
 add_action('wp_ajax_completar_solicitud','completar_solicitud_callback');
