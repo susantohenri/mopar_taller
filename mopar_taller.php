@@ -137,9 +137,9 @@ function insertar_cliente_callback(){
 	$wpdb->insert('clientes',$array_insert);
 
 	//Enviar por correo la pass
-	$body = "Hola " . $_POST['nombres'] . "\n\nBienvenido! Has sido creado como cliente en el taller Doctor Mopar, se te ha creado una nueva contraseña para acceder a nuestro portal de clientes.\n\n\nTu nueva contraseña es: " . $pass . "\n\n";
+	$body = "Hola " . $_POST['nombres'] . "\n\nBienvenido! Has sido creado como cliente en el taller Doctor Mopar, se ha creado un password para acceder a nuestro portal de clientes:\n\n\nTu password es: " . $pass . "\n\n";
 	$body .= "https://www.doctormopar.com/clientes/";
-	mail($_POST['email'].",j.basso@me.com",'Nueva contraseña para entrar a DoctorMopar',$body);
+	mail($_POST['email'].",j.basso@me.com",'Password para entrar a DoctorMopar',$body);
 
 	$json = [
 		'status' => 'OK'
@@ -1025,18 +1025,15 @@ class Mopar{
 				$hour = date_format($fecha, 'H');
 				$minute = date_format($fecha, 'i');
 				$ampm = 'AM/PM';
-				$message = "
-{$client_name}:
+				$message = "{$client_name}:
+
 Gracias por agendar una hora con Doctor Mopar. Tu cita está programada para el día {$day} de {$month} de {$year} a las {$hour}:{$minute} {$ampm}! Si necesitas cambiar tu hora, no dudes en contactarnos.
 Te esperamos!
-
-
 
 Atentamente,
 Catalina Heckmann
 Servicio al cliente
-+56985991053
-				";
++56985991053";
 				break;
 			case 'ingreso_created':
 				$solicitud = Mopar::getOneSolicitud($entity_id);
@@ -1046,25 +1043,17 @@ Servicio al cliente
 				$vehicle = Mopar::getOneVehiculo($solicitud->vehiculo_id);
 
 				$subject = 'Estamos reparando su vehículo!';
-				$message = "
-{$client_name}:
+				$message = "{$client_name}:
+	
 Nos complace informarte que tu {$vehicle->marca} {$vehicle->modelo} está siendo atendido por nuestro equipo de profesionales.
+
 Durante el proceso de servicio, si tienes alguna pregunta o necesitas alguna información adicional, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte en todo momento y asegurarnos de que tengas la mejor experiencia.
 
-
-
-Te mantendremos informado sobre el progreso de tu vehículo y te notificaremos cuando esté listo para ser retirado.
-
-
-
-Gracias nuevamente por elegirnos y confiar en nuestro taller.
-
-
+Te mantendremos informado sobre el progreso de tu vehículo y te notificaremos cuando esté listo para ser retirado. Gracias nuevamente por elegirnos y confiar en nuestro taller.
 
 Marco Alvarado
 Jefe de Taller
-+56985991053
-				";
++56985991053";
 				break;
 			case 'realizados_created':
 				$ot = Mopar::getOneOt($entity_id);
@@ -1075,15 +1064,11 @@ Jefe de Taller
 				$pdf_url = site_url("wp-content/plugins/mopar_taller/pdf.php?id={$entity_id}");
 
 				$subject = 'Su vehículo está listo!';
-				$message = "
-{$client_name}:
+				$message = "{$client_name}:
+
 Nos complace informarte que tu vehículo ha sido completamente atendido y se encuentra listo para ser retirado en nuestro taller. Estamos seguros de que notarás la diferencia en el rendimiento y el estado de tu vehículo!
 
-
-
-Para acceder a una descripción detallada y los valores de los servicios realizados en tu vehículo, sigue este enlace: {$pdf_url}
-
-
+Para acceder a una descripción detallada y los valores de los servicios realizados en tu vehículo, ingresa al portal del cliente usando tu usuario y password, siguiendo este enlace: https://www.doctormopar.com/clientes/
 
 Datos de transferencia:
 Banco Santander
@@ -1092,16 +1077,11 @@ Javier Basso
 17.266.522-5
 taller@doctormopar.com
 
-
-
 Por favor, acércate a nuestro taller en Los Cerezos #375, Ñuñoa para recoger tu vehículo. Nuestro horario de atención es de 8:30 a 6:30 hrs de lunes a viernes. Si necesitas programar un horario de retiro especial, no dudes en contactarnos con anticipación.
-
-
 
 Mariela Diaz
 Gerente de Local
-+56985991053
-				";
++56985991053";
 				break;
 			case 'entregar_created':
 				$ot = Mopar::getOneOt($entity_id);
@@ -1110,36 +1090,22 @@ Gerente de Local
 				$client_name = Mopar::getNombreCliente($cliente->id, false);
 
 				$subject = 'Gracias por elegir Doctor Mopar!';
-				$message = "
-Estimado/a {$client_name},
+				$message = "{$client_name}: 
 
+Soy el Doctor Mopar, y deseo expresar mi más sincero agradecimiento por elegir mi taller para el servicio de su vehículo. He dedicado años de esfuerzo y dedicación para garantizar que su experiencia supere toda expectativa.
 
+Si en algún momento tiene alguna pregunta, comentario o sugerencia sobre el servicio que ha recibido, no dude en ponerse en contacto conmigo directamente a través de mi correo personal: j.basso@me.com. Estoy aquí para brindarle la mejor atención y asistencia posible.
 
-Soy el fundador de Doctor Mopar, quiero agradecer por confiar en nuestro taller para el servicio de su vehículo. Espero sinceramente que su experiencia haya sido satisfactoria.
+Además, lo invito a compartir su experiencia con el taller dejando una reseña en Google, simplemente siguiendo este enlace: 
+https://g.page/r/Cf9nCYvkpvGhEBM/review
+Su opinión es muy valiosa para mi, y para otros conductores.
 
-
-
-Si tiene alguna pregunta o comentario sobre el servicio recibido, no dude en contactarme a mi correo personal: j.basso@me.com
-
-
-
-Además, lo invito a compartir su experiencia con el taller dejando una reseña en Google, simplemente siguiendo este enlace: https://g.page/r/Cf9nCYvkpvGhEBM/review
-
-
-
-Su opinión es muy valiosa para mi y para otros conductores
 Nuevamente, gracias por la confianza.
-
-
-
-¡Saludos cordiales!
-
-
+Saludos,
 
 Javier Basso
 Doctor Mopar
-+1 (213) 522-6721
-				";
++1(213)522-6721";
 				break;
 		}
 		add_filter( 'wp_mail_from', function () {
