@@ -1016,16 +1016,15 @@ class Mopar{
 				$solicitud = Mopar::getOneSolicitud($entity_id);
 				$cliente = Mopar::getOneCliente($solicitud->cliente_id);
 				$recipient = $cliente->email;
-				$client_name = Mopar::getNombreCliente($cliente->id, false);
 				$subject = 'Su hora al taller ha sido agendada!';
 				$fecha = date_create("{$solicitud->fecha} {$solicitud->hora}");
 				$day = date_format($fecha, 'd');
-				$month = date_format($fecha, 'm');
+				$month = Mopar::getNombreMes(date_format($fecha, 'm'));
 				$year = date_format($fecha, 'Y');
 				$hour = date_format($fecha, 'H');
 				$minute = date_format($fecha, 'i');
 				$ampm = 'AM/PM';
-				$message = "{$client_name}:
+				$message = "{$cliente->nombres}:
 
 Gracias por agendar una hora con Doctor Mopar. Tu cita está programada para el día {$day} de {$month} de {$year} a las {$hour}:{$minute} {$ampm}! Si necesitas cambiar tu hora, no dudes en contactarnos.
 Te esperamos!
@@ -1039,11 +1038,10 @@ Servicio al cliente
 				$solicitud = Mopar::getOneSolicitud($entity_id);
 				$cliente = Mopar::getOneCliente($solicitud->cliente_id);
 				$recipient = $cliente->email;
-				$client_name = Mopar::getNombreCliente($cliente->id, false);
 				$vehicle = Mopar::getOneVehiculo($solicitud->vehiculo_id);
 
 				$subject = 'Estamos reparando su vehículo!';
-				$message = "{$client_name}:
+				$message = "{$cliente->nombres}:
 	
 Nos complace informarte que tu {$vehicle->marca} {$vehicle->modelo} está siendo atendido por nuestro equipo de profesionales.
 
@@ -1059,12 +1057,9 @@ Jefe de Taller
 				$ot = Mopar::getOneOt($entity_id);
 				$cliente = Mopar::getOneCliente($ot->cliente_id);
 				$recipient = $cliente->email;
-				$client_name = Mopar::getNombreCliente($cliente->id, false);
-				$vehicle = Mopar::getOneVehiculo($ot->vehiculo_id);
-				$pdf_url = site_url("wp-content/plugins/mopar_taller/pdf.php?id={$entity_id}");
 
 				$subject = 'Su vehículo está listo!';
-				$message = "{$client_name}:
+				$message = "{$cliente->nombres}:
 
 Nos complace informarte que tu vehículo ha sido completamente atendido y se encuentra listo para ser retirado en nuestro taller. Estamos seguros de que notarás la diferencia en el rendimiento y el estado de tu vehículo!
 
@@ -1087,10 +1082,9 @@ Gerente de Local
 				$ot = Mopar::getOneOt($entity_id);
 				$cliente = Mopar::getOneCliente($ot->cliente_id);
 				$recipient = $cliente->email;
-				$client_name = Mopar::getNombreCliente($cliente->id, false);
 
 				$subject = 'Gracias por elegir Doctor Mopar!';
-				$message = "{$client_name}: 
+				$message = "{$cliente->nombres}: 
 
 Soy el Doctor Mopar, y deseo expresar mi más sincero agradecimiento por elegir mi taller para el servicio de su vehículo. He dedicado años de esfuerzo y dedicación para garantizar que su experiencia supere toda expectativa.
 
