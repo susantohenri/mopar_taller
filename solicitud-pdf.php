@@ -122,7 +122,7 @@ if (user_can( $current_user, 'administrator' )) {
 	    <br><br>
 	    
 	    <br><br><br>
-	    <br><br><br><br>
+	    <br><br>
 	    <table style="width: 590px;">
 	        <tr>
 	            <td style="width: 196px; text-align: center;">

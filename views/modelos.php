@@ -77,7 +77,7 @@ $modelos = Mopar::getModelos();
 						<th> Marca </th>
 						<th> Modelo </th>
 						<th> Version </th>
-						<th> Imagen </th>
+						<th> Miniatura </th>
 						<th class="text-center">Acciones</th>
 					</tr>
 				</thead>
@@ -148,7 +148,7 @@ $modelos = Mopar::getModelos();
                         <div class="form-group col-md-12">
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Foto</span>
+                                    <span class="input-group-text">Miniatura</span>
                                 </div>
                                 <input type="file" name="uploadsHistory" class="form-control pl-4" required>
                             </div>

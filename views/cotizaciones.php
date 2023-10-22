@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $folder = $_SERVER['DOCUMENT_ROOT'] . '/wp-content/plugins/mopar_taller/uploads/';
 $inserted = false;
 $updated = false;
@@ -575,7 +575,7 @@ if ($_POST) {
 			regid = tr.data('regid');
 
 			$.confirm({
-				title: 'Entrega del Vehículo',
+				title: 'Trabajo finalizado',
 				content: '¿Quiere completar el trabajo para esta cotizacion?',
 				type: 'green',
 				icon: 'fa fa-success',

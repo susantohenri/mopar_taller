@@ -1,4 +1,4 @@
-﻿<?php include 'header.php'; ?>
+<?php include 'header.php'; ?>
 
 <?php 
 if( $_GET['vid'] ){
@@ -134,7 +134,7 @@ if( $_GET['vid'] ){
 					          		<span class="input-group-text">Modelo</span>
 						        </div>
 						        <select name="modelo_id" class="form-control">
-									<option value="0">Otro</option>
+									<!--<option value="0">Seleccione</option>-->
 						        	<?php foreach ($modelos as $modelo) { ?>
 						        	<option value="<?php echo $modelo->id ?>"><?php echo $modelo->marca ?> / <?php echo $modelo->modelo ?> / <?php echo $modelo->version ?> / <?php echo $modelo->ano ?> </option>
 						        	<?php } ?>

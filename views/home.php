@@ -38,7 +38,10 @@
 </style>
 
 <div class="container" style="float: left; margin-top: 40px;">
+    
 	<div class="row botonera">
+	    
+	    
 	<!--	<div class="col-4">
 			<a href="admin.php?page=mopar-modelos">
 				<i class="fa fa-suitcase"></i>

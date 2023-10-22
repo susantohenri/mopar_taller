@@ -1,4 +1,4 @@
-﻿<?php  
+<?php  
 $folder = $_SERVER['DOCUMENT_ROOT'].'/wp-content/plugins/mopar_taller/uploads/';
 $inserted = false;
 $updated = false;
@@ -569,8 +569,8 @@ $(document).ready(function(){
 		regid = tr.data('regid');
 
 		$.confirm({
-			title: 'Entrega del Vehículo',
-			content: '¿Quiere completar el trabajo para esta realizado?',
+			title: 'Vehiculo entregado',
+			content: '¿Confirmar que este vehiculo ha sido entregado?',
 			type: 'green',
 			icon: 'fa fa-success',
 			buttons: {
@@ -599,7 +599,7 @@ $(document).ready(function(){
 									$.alert({
 										title: false,
 										type: 'green',
-										content: 'Realizado borrada correctamente'
+										content: 'El trabajo ha sido marcado como entregado'
 									});
 									window.location.reload()
 								}
