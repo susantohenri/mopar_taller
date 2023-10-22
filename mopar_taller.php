@@ -336,6 +336,7 @@ function completar_ot_callback(){
 		global $wpdb;
 		$wpdb->update('ot', ['estado' => 2], ['id' => $_POST['regid']]);
 		$wpdb->update('solicitud', ['estado' => 5], ['ot_id' => $_POST['regid']]);
+		Mopar::sendMail($_POST['regid'], 'realizados_created');
 		$json = [
 			'status' => 'OK'
 		];
@@ -1061,6 +1062,43 @@ Gracias nuevamente por elegirnos y confiar en nuestro taller.
 
 Marco Alvarado
 Jefe de Taller
++56985991053
+				";
+				break;
+			case 'realizados_created':
+				$ot = Mopar::getOneOt($entity_id);
+				$cliente = Mopar::getOneCliente($ot->cliente_id);
+				$recipient = $cliente->email;
+				$client_name = Mopar::getNombreCliente($cliente->id, false);
+				$vehicle = Mopar::getOneVehiculo($ot->vehiculo_id);
+				$pdf_url = site_url("wp-content/plugins/mopar_taller/pdf.php?id={$entity_id}");
+
+				$subject = 'Su vehículo está listo!';
+				$message = "
+{$client_name}:
+Nos complace informarte que tu vehículo ha sido completamente atendido y se encuentra listo para ser retirado en nuestro taller. Estamos seguros de que notarás la diferencia en el rendimiento y el estado de tu vehículo!
+
+
+
+Para acceder a una descripción detallada y los valores de los servicios realizados en tu vehículo, sigue este enlace: {$pdf_url}
+
+
+
+Datos de transferencia:
+Banco Santander
+Cuenta Corriente N° 84154814
+Javier Basso
+17.266.522-5
+taller@doctormopar.com
+
+
+
+Por favor, acércate a nuestro taller en Los Cerezos #375, Ñuñoa para recoger tu vehículo. Nuestro horario de atención es de 8:30 a 6:30 hrs de lunes a viernes. Si necesitas programar un horario de retiro especial, no dudes en contactarnos con anticipación.
+
+
+
+Mariela Diaz
+Gerente de Local
 +56985991053
 				";
 				break;
