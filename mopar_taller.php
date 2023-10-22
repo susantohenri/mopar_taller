@@ -317,6 +317,7 @@ function eliminar_solicitud_callback(){
 function completar_realizados_callback(){
 	global $wpdb;
 	$wpdb->update('ot', ['entregar' => 1], ['id' => $_POST['regid']]);
+	Mopar::sendMail($_POST['regid'], 'entregar_created');
 	$json = [
 		'status' => 'OK'
 	];
@@ -1100,6 +1101,44 @@ Por favor, acércate a nuestro taller en Los Cerezos #375, Ñuñoa para recoger 
 Mariela Diaz
 Gerente de Local
 +56985991053
+				";
+				break;
+			case 'entregar_created':
+				$ot = Mopar::getOneOt($entity_id);
+				$cliente = Mopar::getOneCliente($ot->cliente_id);
+				$recipient = $cliente->email;
+				$client_name = Mopar::getNombreCliente($cliente->id, false);
+
+				$subject = 'Gracias por elegir Doctor Mopar!';
+				$message = "
+Estimado/a {$client_name},
+
+
+
+Soy el fundador de Doctor Mopar, quiero agradecer por confiar en nuestro taller para el servicio de su vehículo. Espero sinceramente que su experiencia haya sido satisfactoria.
+
+
+
+Si tiene alguna pregunta o comentario sobre el servicio recibido, no dude en contactarme a mi correo personal: j.basso@me.com
+
+
+
+Además, lo invito a compartir su experiencia con el taller dejando una reseña en Google, simplemente siguiendo este enlace: https://g.page/r/Cf9nCYvkpvGhEBM/review
+
+
+
+Su opinión es muy valiosa para mi y para otros conductores
+Nuevamente, gracias por la confianza.
+
+
+
+¡Saludos cordiales!
+
+
+
+Javier Basso
+Doctor Mopar
++1 (213) 522-6721
 				";
 				break;
 		}
