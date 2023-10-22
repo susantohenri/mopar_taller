@@ -1004,5 +1004,44 @@ class Mopar{
 	    return implode($pass); //turn the array into a string
 	}
 
+	public static function sendMail ($entity_id, $event) {
+		$recipient = '';
+		$subject = '';
+		$message = '';
+		switch ($event) {
+			case 'fecha_updated':
+				$solicitud = Mopar::getOneSolicitud($entity_id);
+				$cliente = Mopar::getOneCliente($solicitud->cliente_id);
+				$recipient = $cliente->email;
+				$client_name = Mopar::getNombreCliente($cliente->id, false);
+				$subject = 'Su hora al taller ha sido agendada!';
+				$fecha = date_create("{$solicitud->fecha} {$solicitud->hora}");
+				$day = date_format($fecha, 'd');
+				$month = date_format($fecha, 'm');
+				$year = date_format($fecha, 'Y');
+				$hour = date_format($fecha, 'H');
+				$minute = date_format($fecha, 'i');
+				$ampm = 'AM/PM';
+				$message = "
+{$client_name}:
+Gracias por agendar una hora con Doctor Mopar. Tu cita está programada para el día {$day} de {$month} de {$year} a las {$hour}:{$minute} {$ampm}! Si necesitas cambiar tu hora, no dudes en contactarnos.
+Te esperamos!
 
+
+
+Atentamente,
+Catalina Heckmann
+Servicio al cliente
++56985991053
+				";
+				break;
+		}
+		add_filter( 'wp_mail_from', function () {
+			return 'taller@doctormopar.com';
+		});
+		add_filter( 'wp_mail_from_name', function () {
+			return 'Doctor Mopar';
+		});
+		wp_mail($recipient, $subject, $message);
+	}
 }

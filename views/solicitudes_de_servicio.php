@@ -52,11 +52,12 @@ if ($_POST) {
 		$before_update = array_filter($before_update, function ($value, $attr) use ($posted_attr) {
 			return in_array($attr, $posted_attr);
 		}, ARRAY_FILTER_USE_BOTH);
-		if ($before_update !== $array_insert) $array_insert['upddate'] = date('Y-m-d H:i:s');
-
-		if ($wpdb->update('solicitud', $array_insert, ['id' => $_POST['solicitud_id']])) {
-			$updated = true;
+		if ($before_update !== $array_insert) {
+			$array_insert['upddate'] = date('Y-m-d H:i:s');
+			$wpdb->update('solicitud', $array_insert, ['id' => $_POST['solicitud_id']]);
+			Mopar::sendMail($_POST['solicitud_id'], 'fecha_updated');
 		}
+		$updated = true;
 	}
 }
 ?>
