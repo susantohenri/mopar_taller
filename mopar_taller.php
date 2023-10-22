@@ -389,6 +389,7 @@ function completar_solicitud_callback(){
 		];
 	} else {
 		$wpdb->update('solicitud', ['estado' => 2, 'fecha' => null, 'hora' => '00:00:00'], ['id' => $id]);
+		Mopar::sendMail($id, 'ingreso_created');
 		$json = [
 			'status' => 'OK'
 		];
@@ -1032,6 +1033,34 @@ Te esperamos!
 Atentamente,
 Catalina Heckmann
 Servicio al cliente
++56985991053
+				";
+				break;
+			case 'ingreso_created':
+				$solicitud = Mopar::getOneSolicitud($entity_id);
+				$cliente = Mopar::getOneCliente($solicitud->cliente_id);
+				$recipient = $cliente->email;
+				$client_name = Mopar::getNombreCliente($cliente->id, false);
+				$vehicle = Mopar::getOneVehiculo($solicitud->vehiculo_id);
+
+				$subject = 'Estamos reparando su vehículo!';
+				$message = "
+{$client_name}:
+Nos complace informarte que tu {$vehicle->marca} {$vehicle->modelo} está siendo atendido por nuestro equipo de profesionales.
+Durante el proceso de servicio, si tienes alguna pregunta o necesitas alguna información adicional, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte en todo momento y asegurarnos de que tengas la mejor experiencia.
+
+
+
+Te mantendremos informado sobre el progreso de tu vehículo y te notificaremos cuando esté listo para ser retirado.
+
+
+
+Gracias nuevamente por elegirnos y confiar en nuestro taller.
+
+
+
+Marco Alvarado
+Jefe de Taller
 +56985991053
 				";
 				break;
