@@ -344,7 +344,7 @@ if ($_POST) {
 			format: `YYYY-MM-DD`
 		})
 		$('[name="hora"]').datetimepicker({
-			format: `LT`,
+			format: `HH:mm`,
 			icons: {
 				time: `fa fa-clock-o`,
 				date: `fa fa-calendar`,

@@ -1023,10 +1023,9 @@ class Mopar{
 				$year = date_format($fecha, 'Y');
 				$hour = date_format($fecha, 'H');
 				$minute = date_format($fecha, 'i');
-				$ampm = 'AM/PM';
 				$message = "{$cliente->nombres}:
 
-Gracias por agendar una hora con Doctor Mopar. Tu cita está programada para el día {$day} de {$month} de {$year} a las {$hour}:{$minute} {$ampm}! Si necesitas cambiar tu hora, no dudes en contactarnos.
+Gracias por agendar una hora con Doctor Mopar. Tu cita está programada para el día {$day} de {$month} de {$year} a las {$hour}:{$minute}! Si necesitas cambiar tu hora, no dudes en contactarnos.
 Te esperamos!
 
 Atentamente,
