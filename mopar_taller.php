@@ -861,6 +861,18 @@ class Mopar{
 		"));
 	}
 
+	public static function getBlueprintBySolicitudId ($id) {
+		global $wpdb;
+		return $wpdb->get_var($wpdb->prepare("
+			SELECT
+				modelos.blueprint
+			FROM solicitud
+			LEFT JOIN vehiculos ON solicitud.vehiculo_id = vehiculos.id
+			LEFT JOIN modelos ON vehiculos.modelo_id = modelos.id
+			WHERE solicitud.id = %d
+		", $id));
+	}
+
 	public static function getOts(){
 		global $wpdb;
     	$ots = $wpdb->get_results('SELECT * FROM ot ORDER BY id DESC');

@@ -113,11 +113,12 @@ if (user_can( $current_user, 'administrator' )) {
 	</table>
 	</page>';
 
+    $blueprint = site_url('wp-content/plugins/mopar_taller/uploads/' . rawurlencode(Mopar::getBlueprintBySolicitudId($_GET['id'])));
 	$page_2 = '
 	<page backtop="7mm" backbottom="7mm" backleft="10mm" backright="10mm">
 	    
 	    <div style="text-align:center">
-	        <img src=https://www.doctormopar.com/wp-content/uploads/2023/10/jeep-compass-4.png">
+	        <img src="'.$blueprint.'">
 	    </div>
 	    <br><br>
 	    
@@ -141,7 +142,6 @@ if (user_can( $current_user, 'administrator' )) {
 	';
     if (2 == $solicitud->estado) $html .= $page_2;
 
-	
 
 	require_once('html2pdf/html2pdf.class.php');
     $html2pdf = new HTML2PDF($orientation,'LETTER','es');
