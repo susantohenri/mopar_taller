@@ -207,6 +207,12 @@ else:
 
 $(document).ready(function(){
 
+	$(`[name="nombres"],[name="apellidoPaterno"],[name="apellidoMaterno"]`).keyup(function () {
+		var str = $(this).val()
+		str = str.toLowerCase()
+		str = str.charAt(0).toUpperCase() + str.slice(1)
+		$(this).val(str)
+	})
 
 	$(".btnDelete").click(function(){
 		tr = $(this).closest('tr');
