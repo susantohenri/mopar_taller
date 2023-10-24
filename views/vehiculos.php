@@ -80,7 +80,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Año</span>
 						        </div>
-						        <input type="text" name="ano" class="form-control" required>
+						        <input type="text" name="ano" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -88,7 +88,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Marca</span>
 						        </div>
-						        <input type="text" name="marca" class="form-control" required>
+						        <input type="text" name="marca" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -96,7 +96,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Modelo</span>
 						        </div>
-						        <input type="text" name="modelo" class="form-control" required>
+						        <input type="text" name="modelo" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -104,7 +104,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Color</span>
 						        </div>
-						        <input type="text" name="color" class="form-control" required>
+						        <input type="text" name="color" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -112,7 +112,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">VIN</span>
 						        </div>
-						        <input type="text" name="nro_motor" class="form-control" required>
+						        <input type="text" name="nro_motor" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -184,7 +184,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Año</span>
 						        </div>
-						        <input type="text" name="ano" class="form-control" required>
+						        <input type="text" name="ano" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -192,7 +192,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Marca</span>
 						        </div>
-						        <input type="text" name="marca" class="form-control" required>
+						        <input type="text" name="marca" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -200,7 +200,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Modelo</span>
 						        </div>
-						        <input type="text" name="modelo" class="form-control" required>
+						        <input type="text" name="modelo" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -208,7 +208,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">Color</span>
 						        </div>
-						        <input type="text" name="color" class="form-control" required>
+						        <input type="text" name="color" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
@@ -216,7 +216,7 @@ if( $_GET['vid'] ){
 						        <div class="input-group-prepend">
 					          		<span class="input-group-text">VIN</span>
 						        </div>
-						        <input type="text" name="nro_motor" class="form-control" required>
+						        <input type="text" name="nro_motor" class="form-control" style="text-transform: uppercase;" required>
 					      	</div>
 				    	</div>
 				    	<div class="form-group col-md-6">
