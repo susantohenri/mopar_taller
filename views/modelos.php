@@ -33,12 +33,38 @@ if( $_POST ){
         }
     }
 
+    $tmp_blueprint = $_FILES['blueprint']['tmp_name'];
+    if ($tmp_blueprint == ""){
+        if( $_POST['existing_blueprint'] == "" ){
+            $blueprint = '';
+        } else {
+            $blueprint = $_POST['existing_blueprint'];
+        }
+    } else {
+        $name = $_FILES['blueprint']['name'];
+        $pathinfo = pathinfo($name);
+        $array_extension_allowed = array('jpeg','jpg','png');
+
+        if( in_array($pathinfo['extension'],$array_extension_allowed) ){
+
+            $filename_body = uniqid($input_name);
+            $newName = $pathinfo['filename'].'___'.$filename_body.'.'.$pathinfo['extension'];
+            $newFilePath = $folder . $newName;
+
+            if(move_uploaded_file($tmp_blueprint, $newFilePath)) {
+                $blueprint = $newName;
+            } else {
+                $blueprint = '';
+            }
+        }
+    }
 
     $array_insert = [
         'marca' => $_POST['marca'],
         'modelo' => $_POST['modelo'],
         'version' => $_POST['version'],
-        'imagen' => $archivo
+        'imagen' => $archivo,
+        'blueprint' => $blueprint
     ];
 
     if( $_POST['action'] == 'insertar_modelo' ){
@@ -153,6 +179,14 @@ $modelos = Mopar::getModelos();
                                 <input type="file" name="uploadsHistory" class="form-control pl-4" required>
                             </div>
                         </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Blueprint</span>
+                                </div>
+                                <input type="file" name="blueprint" class="form-control pl-4" required>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -220,6 +254,16 @@ $modelos = Mopar::getModelos();
                                 <a class="btn-link btn border archivo_link" target="_blank" href=""></a>
                             </div>
                         </div>
+                        <div class="form-group col-md-12">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Blueprint</span>
+                                </div>
+                                <input type="file" name="blueprint" class="form-control pl-4">
+                                <input type="hidden" name="existing_blueprint">
+                                <a class="btn-link btn border blueprint_link" target="_blank" href=""></a>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -276,6 +320,9 @@ $(document).ready(function(){
 
                 $('#modalEditModelo a.archivo_link').attr('href','<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/uploads/' + json.modelo.imagen);
                 $('#modalEditModelo a.archivo_link').html(json.modelo.imagen + ' &nbsp; <i class="fa fa-external-link"></i>');
+
+                $('#modalEditModelo a.blueprint_link').attr('href','<?php bloginfo('wpurl') ?>/wp-content/plugins/mopar_taller/uploads/' + json.modelo.blueprint);
+                $('#modalEditModelo a.blueprint_link').html(json.modelo.blueprint + ' &nbsp; <i class="fa fa-external-link"></i>');
 
                 $(".overlay").hide();
                 $('#modalEditModelo').modal('show');        
