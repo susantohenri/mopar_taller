@@ -258,59 +258,61 @@ $(document).ready(function(){
 
 	$("#formNuevoCliente").submit(function(e){
 		e.preventDefault();
-
-		$.confirm({
-		    title: 'Nueva Password para nuevo cliente!',
-		    content: 'Al crear un nuevo cliente, se generará una password aleatoria y será enviada al email del cliente ingresado.<br>¿Proceder?',
-			type: 'red',
-			theme: 'bootstrap',
-			icon: 'fa fa-warning',
-		    buttons: {
-		        NO:{
-		            text: 'No',
-		            btnClass: 'btn-red',
-		        },
-		        SI:{
-		            text: 'Si',
-		            btnClass: 'btn-green',
-		            action: function(){
-		            	$.ajax({
-		            		type: 'POST',
-		            		url: '<?php echo admin_url('admin-ajax.php'); ?>',
-		            		dataType: 'json',
-		            		data: $('#formNuevoCliente').serialize(),
-		            		beforeSend: function(){
-		            			$(".overlay").show();
-		            		},
-		            		success: function(json){
-		            			$(".overlay").hide();
-		            			if( json.status == 'OK' ){
-			            			$('#modalNewCliente').modal('hide');
-			            			$.alert({
-	    								title: false,
-	    								type: 'green',
-										content: 'Cliente ingresado correctamente',
-	    								buttons: {
-		        							volver: {
-									            action: function () {
-									                location.reload();
-									            }
-									        }
-									    }
-									});
-			            		} else {
-			            			$.alert({
-	    								title: false,
-	    								type: 'red',
-										content: json.msg
-									});
-			            		}
-		            		}
-		            	})
-		            }
-		        }
-		    }
-		});
+		validateEmail($(this), is_valid => {
+			if (!is_valid) return false
+			else $.confirm({
+				title: 'Nueva Password para nuevo cliente!',
+				content: 'Al crear un nuevo cliente, se generará una password aleatoria y será enviada al email del cliente ingresado.<br>¿Proceder?',
+				type: 'red',
+				theme: 'bootstrap',
+				icon: 'fa fa-warning',
+				buttons: {
+					NO:{
+						text: 'No',
+						btnClass: 'btn-red',
+					},
+					SI:{
+						text: 'Si',
+						btnClass: 'btn-green',
+						action: function(){
+							$.ajax({
+								type: 'POST',
+								url: '<?php echo admin_url('admin-ajax.php'); ?>',
+								dataType: 'json',
+								data: $('#formNuevoCliente').serialize(),
+								beforeSend: function(){
+									$(".overlay").show();
+								},
+								success: function(json){
+									$(".overlay").hide();
+									if( json.status == 'OK' ){
+										$('#modalNewCliente').modal('hide');
+										$.alert({
+											title: false,
+											type: 'green',
+											content: 'Cliente ingresado correctamente',
+											buttons: {
+												volver: {
+													action: function () {
+														location.reload();
+													}
+												}
+											}
+										});
+									} else {
+										$.alert({
+											title: false,
+											type: 'red',
+											content: json.msg
+										});
+									}
+								}
+							})
+						}
+					}
+				}
+			});
+		})
 	});
 
 
@@ -336,39 +338,42 @@ $(document).ready(function(){
 
 	$("#formEditCliente").submit(function(e){
 		e.preventDefault();
-		$.ajax({
-    		type: 'POST',
-    		url: '<?php echo admin_url('admin-ajax.php'); ?>',
-    		dataType: 'json',
-    		data: $('#formEditCliente').serialize() + '&regid=' + regid,
-    		beforeSend: function(){
-    			$(".overlay").show();
-    		},
-    		success: function(json){
-    			$(".overlay").hide();
-    			if( json.status == 'OK' ){
-        			$('#modalEditCliente').modal('hide');
-        			$.alert({
-						title: false,
-						type: 'green',
-						content: 'Cliente editado correctamente',
-						buttons: {
-							volver: {
-					            action: function () {
-					                location.reload();
-					            }
-					        }
-					    }
-					});
-        		} else {
-        			$.alert({
-						title: false,
-						type: 'red',
-						content: json.msg
-					});
-        		}
-    		}
-    	})
+		validateEmail($(this), is_valid => {
+			if (!is_valid) return false
+			else $.ajax({
+				type: 'POST',
+				url: '<?php echo admin_url('admin-ajax.php'); ?>',
+				dataType: 'json',
+				data: $('#formEditCliente').serialize() + '&regid=' + regid,
+				beforeSend: function(){
+					$(".overlay").show();
+				},
+				success: function(json){
+					$(".overlay").hide();
+					if( json.status == 'OK' ){
+						$('#modalEditCliente').modal('hide');
+						$.alert({
+							title: false,
+							type: 'green',
+							content: 'Cliente editado correctamente',
+							buttons: {
+								volver: {
+									action: function () {
+										location.reload();
+									}
+								}
+							}
+						});
+					} else {
+						$.alert({
+							title: false,
+							type: 'red',
+							content: json.msg
+						});
+					}
+				}
+			})
+		})
 	});
 
 	$("[name=rut]").blur(function(){
@@ -376,6 +381,28 @@ $(document).ready(function(){
 	});
 
     $('#tabla_clientes').DataTable({order: [[0, 'desc']]});
+
+	function validateEmail(form, cb) {
+		const email = form.find(`[name=email]`).val()
+		const id = 0 < form.find(`[name=regid]`).length ? form.find(`[name=regid]`).val() : 0
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo admin_url('admin-ajax.php'); ?>',
+			dataType: 'json',
+			data: `action=validate_cliente&email=${email}&id=${id}`,
+			beforeSend: function () { },
+			success: function (json) {
+				if (`ERROR` === json.status) {
+					$.alert({
+						title: false,
+						type: 'red',
+						content: json.message
+					});
+					cb(false)
+				} else cb(true)
+			}
+		})
+	}
 });
 
 

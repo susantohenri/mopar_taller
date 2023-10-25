@@ -120,7 +120,18 @@ function eliminar_cliente_callback(){
 	exit();  
 }
 
+function validate_cliente_callback(){
+	$json = Mopar::clienteValidateEmail($_POST['email'], $_POST['id']) ?
+		[
+			'status' => 'OK'
+		]:[
+			'status' => 'ERROR',
+			'message' => 'El correo del cliente ya está registrado'
+		];
 
+	echo json_encode($json);
+	exit();
+}
 
 function insertar_cliente_callback(){
 	global $wpdb;
@@ -700,6 +711,7 @@ function mopar_taller_select2_clientes () {
 }
 
 //Clientes
+add_action('wp_ajax_validate_cliente','validate_cliente_callback');
 add_action('wp_ajax_insertar_cliente','insertar_cliente_callback');
 add_action('wp_ajax_actualizar_cliente','actualizar_cliente_callback');
 add_action('wp_ajax_eliminar_cliente','eliminar_cliente_callback');
@@ -768,6 +780,13 @@ class Mopar{
     	$cliente = $wpdb->get_row('SELECT * FROM clientes where id = ' . $cliente_id);
 
     	return $cliente;
+	}
+
+	public static function clienteValidateEmail($email, $client_id = 0){
+		global $wpdb;
+		$clientes = $wpdb->get_results($wpdb->prepare('SELECT id FROM clientes where email = %s', $email));
+
+		return 0 === $client_id ? 0 === count($clientes) : 0 === count($clientes) || $clientes[0]->id == $client_id;
 	}
 
 	public static function getVehiculos(){
