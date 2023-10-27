@@ -805,7 +805,12 @@ class Mopar{
 
 	public static function getVehiculosByCliente($cliente_id){
 		global $wpdb;
-    	$cliente = $wpdb->get_results('SELECT * FROM vehiculos where cliente_id = ' . $cliente_id);
+		$cliente = $wpdb->get_results($wpdb->prepare("
+			SELECT vehiculos.*, modelos.imagen
+			FROM vehiculos
+			LEFT JOIN modelos ON vehiculos.modelo_id = modelos.id
+			WHERE cliente_id = %d
+		", $cliente_id));
 
     	return $cliente;
 	}
@@ -1130,6 +1135,11 @@ Saludos,
 Javier Basso
 Doctor Mopar
 +1(213)522-6721";
+				break;
+			case 'forgot_password':
+					$recipient = $entity_id['recipient'];
+					$subject = 'Your new password on Doctormopar';
+					$message = "Here is your new password for Doctormopar client area: <b>{$entity_id['new_password']}</b>";
 				break;
 		}
 		add_filter( 'wp_mail_from', function () {
