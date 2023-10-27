@@ -1139,7 +1139,7 @@ Doctor Mopar
 			case 'forgot_password':
 					$recipient = $entity_id['recipient'];
 					$subject = 'Your new password on Doctormopar';
-					$message = "Here is your new password for Doctormopar client area: <b>{$entity_id['new_password']}</b>";
+					$message = "Here is your new password for Doctormopar client area: {$entity_id['new_password']}";
 				break;
 		}
 		add_filter( 'wp_mail_from', function () {
