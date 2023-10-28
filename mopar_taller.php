@@ -73,12 +73,24 @@ function taller_trabajos_realizado_func(){
 }
 
 function taller_preparacion_contable_func(){
-    $solicituds = Mopar::getPreparacionContable();
+	global $wpdb;
+	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
+    $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
+	$max_year = $wpdb->get_var("SELECT MAX(YEAR(regdate)) FROM solicitud");
+	$filter_year = isset($_POST['filter_year']) && !isset($_POST['filter_reset']) ? $_POST['filter_year'] : date('Y', time());
+
+	$solicituds = Mopar::getPreparacionContable($filter_month, $filter_year);
 	include('views/preparacion-contable.php');
 }
 
 function taller_conciliacion_contable_func(){
-    $solicituds = Mopar::ConciliacionContable();
+	global $wpdb;
+	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
+    $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
+	$max_year = $wpdb->get_var("SELECT MAX(YEAR(regdate)) FROM solicitud");
+	$filter_year = isset($_POST['filter_year']) && !isset($_POST['filter_reset']) ? $_POST['filter_year'] : date('Y', time());
+
+    $solicituds = Mopar::ConciliacionContable($filter_month, $filter_year);
 	include('views/conciliacion-contable.php');
 }
 
@@ -834,14 +846,14 @@ class Mopar{
     	return $solicituds;
 	}
 
-	public static function getPreparacionContable(){
+	public static function getPreparacionContable($month, $year){
 		/*
 			1) Cotizaciones, without a trabajo realizado document (4)
 			2) Ordenes de ingreso without a cotización (2)
 			3) trabajos realizados that have not been delivered to their owners yet (5 && !entragar)
 		*/
 		global $wpdb;
-		$solicituds = $wpdb->get_results("
+		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
 				solicitud.*
 				, CASE
@@ -851,24 +863,27 @@ class Mopar{
 				END tipo_de_documento
 			FROM solicitud
 			LEFT JOIN ot ON solicitud.ot_id = ot.id
-			WHERE solicitud.estado IN (2,4) OR (solicitud.estado = 5 AND 0 = ot.entregar)
+			WHERE (solicitud.estado IN (2,4) OR (solicitud.estado = 5 AND 0 = ot.entregar))
+			AND MONTH(solicitud.regdate) = %d AND YEAR(solicitud.regdate) = %d
 			ORDER BY id DESC
-		");
+		", $month, $year
+		));
 
 		return $solicituds;
 	}
 
-	public static function ConciliacionContable(){
+	public static function ConciliacionContable($month, $year){
 		// 1) trabajos realizados that have been delivered to their owners
 		global $wpdb;
-		$solicituds = $wpdb->get_results("
+		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
 				solicitud.*
 			FROM solicitud
 			LEFT JOIN ot ON solicitud.ot_id = ot.id
-			WHERE solicitud.estado = 5 AND 1 = ot.entregar
+			WHERE (solicitud.estado = 5 AND 1 = ot.entregar)
+			AND MONTH(solicitud.regdate) = %d AND YEAR(solicitud.regdate) = %d
 			ORDER BY id DESC
-		");
+		", $month, $year));
 
 		return $solicituds;
 	}

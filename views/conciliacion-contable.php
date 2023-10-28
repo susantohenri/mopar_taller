@@ -1,22 +1,22 @@
-﻿<?php
-$inserted = false;
-$updated = false;
-
-?>
-
-<?php include 'header.php'; ?>
+﻿<?php include 'header.php'; ?>
 
 <div class="box pr-4">
 	<div class="box-header mb-4">
 		<h2 class="font-weight-light text-center text-muted float-left"> Conciliación Contable</h2>
-		<div style="float: right;">
-			<select>
-				<option>January</option>
+		<form style="float: right;" method="POST">
+			<select name="filter_month">
+				<?php foreach ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as $month) : ?>
+					<option value="<?= $month ?>" <?= $month == $filter_month ? 'selected':'' ?>><?= Mopar::getNombreMes($month) ?></option>
+				<?php endforeach ?>
 			</select>
-			<select>
-				<option>2023</option>
+			<select name="filter_year">
+				<?php for ($year = $min_year; $year <= $max_year; $year++) : ?>
+					<option value="<?= $year ?>" <?= $year == $filter_year ? 'selected':'' ?>><?= $year ?></option>
+				<?php endfor ?>
 			</select>
-		</div>
+			<button>Filter</button>
+			<button name="filter_reset">Reset</button>
+		</form>
 		<div class="clearfix"></div>
 	</div>
 	<div class="box-body">
@@ -61,29 +61,6 @@ $updated = false;
 
 <script>
 	$(document).ready(function() {
-
-		<?php if ($inserted) { ?>
-			$.alert({
-				type: 'green',
-				title: false,
-				content: 'Solicitud ingresada correctamente'
-			})
-		<?php } ?>
-
-
-		<?php if ($updated) { ?>
-			$.alert({
-				type: 'green',
-				title: false,
-				content: 'Solicitud actualizada correctamente'
-			})
-		<?php } ?>
-
-		<?php if ($inserted || $updated) { ?>
-			location.href = '<?php bloginfo('wpurl') ?>/wp-admin/admin.php?page=preparacion-contable';
-		<?php } ?>
-
-
 		$('#tabla_solicituds').DataTable({
 			"ordering": false,
 			"columnDefs": [{
