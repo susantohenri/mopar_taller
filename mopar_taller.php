@@ -73,16 +73,12 @@ function taller_trabajos_realizado_func(){
 }
 
 function taller_preparacion_contable_func(){
-	$vehiculos = Mopar::getVehiculos();
-	$clientes = Mopar::getClientes();
-    $solicituds = Mopar::getSolicitudsDeServicioso();
+    $solicituds = Mopar::getPreparacionContable();
 	include('views/preparacion-contable.php');
 }
 
 function taller_conciliacion_contable_func(){
-	$vehiculos = Mopar::getVehiculos();
-	$clientes = Mopar::getClientes();
-    $solicituds = Mopar::getSolicitudsDeServicioso();
+    $solicituds = Mopar::ConciliacionContable();
 	include('views/conciliacion-contable.php');
 }
 
@@ -836,6 +832,45 @@ class Mopar{
 		$solicituds = $wpdb->get_results('SELECT * FROM solicitud WHERE estado IN (1,2,3,4,5) ORDER BY id DESC');
 
     	return $solicituds;
+	}
+
+	public static function getPreparacionContable(){
+		/*
+			1) Cotizaciones, without a trabajo realizado document (4)
+			2) Ordenes de ingreso without a cotización (2)
+			3) trabajos realizados that have not been delivered to their owners yet (5 && !entragar)
+		*/
+		global $wpdb;
+		$solicituds = $wpdb->get_results("
+			SELECT
+				solicitud.*
+				, CASE
+					WHEN 2 = solicitud.estado THEN 'ORDEN DE INGRESO'
+					WHEN 4 = solicitud.estado THEN 'COTIZACIÓN'
+					ELSE 'TRABAJO REALIZADO'
+				END tipo_de_documento
+			FROM solicitud
+			LEFT JOIN ot ON solicitud.ot_id = ot.id
+			WHERE solicitud.estado IN (2,4) OR (solicitud.estado = 5 AND 0 = ot.entregar)
+			ORDER BY id DESC
+		");
+
+		return $solicituds;
+	}
+
+	public static function ConciliacionContable(){
+		// 1) trabajos realizados that have been delivered to their owners
+		global $wpdb;
+		$solicituds = $wpdb->get_results("
+			SELECT
+				solicitud.*
+			FROM solicitud
+			LEFT JOIN ot ON solicitud.ot_id = ot.id
+			WHERE solicitud.estado = 5 AND 1 = ot.entregar
+			ORDER BY id DESC
+		");
+
+		return $solicituds;
 	}
 
 	public static function getOrdenDeIngreso(){

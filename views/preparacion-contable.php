@@ -9,9 +9,14 @@ $updated = false;
 <div class="box pr-4">
 	<div class="box-header mb-4">
 		<h2 class="font-weight-light text-center text-muted float-left"> Preparación Contable</h2>
-		<select style="float: right;">
-			<option>January</option>
-		</select>
+		<div style="float: right;">
+			<select>
+				<option>January</option>
+			</select>
+			<select>
+				<option>2023</option>
+			</select>
+		</div>
 		<div class="clearfix"></div>
 	</div>
 	<div class="box-body">
@@ -37,10 +42,10 @@ $updated = false;
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
 						<td style="text-align: right;">$ <?= $solicitud->total ?></td>
 						<td style="text-align: right;">$ <?= $solicitud->gastos ?></td>
-						<td></td>
+						<td><?= $solicitud->tipo_de_documento ?></td>
 						<td class="text-center" style="white-space: nowrap;">
-							<button class="btn btn-warning btnProceedWithoutIngreso" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
-							<button class="btn btn-danger btnMotivo" data-toggle="tooltip" title="Descartar"><i class="fa fa-plus"></i></button>
+							<button class="btn btn-warning" data-toggle="tooltip" title="Iniciar Cotización"><i class="fa fa-list"></i></button>
+							<button class="btn btn-success" data-toggle="tooltip" title="Descartar"><i class="fa fa-plus"></i></button>
 						</td>
 					</tr>
 				<?php endforeach; ?>
