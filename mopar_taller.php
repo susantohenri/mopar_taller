@@ -20,6 +20,8 @@ function theme_options_panel(){
 	add_submenu_page( 'mopar-taller', 'Ordenes de Ingreso', 'Ordenes de Ingreso', 'manage_options', 'mopar-orden-de-ingreso', 'taller_orden_de_ingreso_func');
 	add_submenu_page( 'mopar-taller', 'Cotizaciones', 'Cotizaciones', 'manage_options', 'mopar-cotizaciones', 'taller_cotizaciones_func');
 	add_submenu_page( 'mopar-taller', 'Trabajos Realizados', 'Trabajos Realizados', 'manage_options', 'mopar-trabajos-realizado', 'taller_trabajos_realizado_func');
+	add_submenu_page( 'mopar-taller', 'Preparación Contable', 'Preparación Contable', 'manage_options', 'preparacion-contable', 'taller_preparacion_contable_func');
+	add_submenu_page( 'mopar-taller', 'Conciliación Contable', 'Conciliación Contable', 'manage_options', 'conciliacion-contable', 'taller_conciliacion_contable_func');
 }
 add_action('admin_menu', 'theme_options_panel');
  
@@ -68,6 +70,20 @@ function taller_trabajos_realizado_func(){
 	$clientes = Mopar::getClientes();
     $ots = Mopar::getTrabajosRealizado();
 	include('views/trabajos-realizados.php');
+}
+
+function taller_preparacion_contable_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+    $solicituds = Mopar::getSolicitudsDeServicioso();
+	include('views/preparacion-contable.php');
+}
+
+function taller_conciliacion_contable_func(){
+	$vehiculos = Mopar::getVehiculos();
+	$clientes = Mopar::getClientes();
+    $solicituds = Mopar::getSolicitudsDeServicioso();
+	include('views/conciliacion-contable.php');
 }
 
 function taller_solicitudes_de_servicio_func(){
@@ -952,6 +968,7 @@ class Mopar{
 		global $wpdb;
 		if( $cliente_id ):
 			$cliente = Mopar::getOneCliente($cliente_id);
+			if (!$cliente) return '';
 
 			if( $apellido_primero )
 				$nombre_cliente = $cliente->apellidoPaterno . " " . $cliente->apellidoMaterno . " " . $cliente->nombres;
