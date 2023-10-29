@@ -135,11 +135,28 @@
 			}]
 		});
 
+		const add_expense_modal = $(`#modalAddExpense`)
+		const monto = $(`[name=monto]`)
+		monto.keyup(() => {
+			var typed = monto.val()
+			typed = typed.replace(`$`, ``).replace(`,`, ``)
+			typed = parseInt(typed)
+			if (isNaN(typed)) typed = 0
+			typed = typed.toString()
+			typed = typed.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+			monto.val(`$${typed}`)
+		})
+
 		$(`.btn-add-expense`).click(function() {
-			const modal = $(`#modalAddExpense`)
+			add_expense_modal.find(`[type=text], textarea`).val(``)
+			add_expense_modal.find(`[type=radio]`).prop(`checked`, false)
 			const solicitud_id = $(this).parents(`tr`).attr(`data-regid`)
-			modal.find(` [name = solicitud_id] `).val(solicitud_id)
-			modal.modal(`show`)
+			add_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
+			add_expense_modal.modal(`show`)
+		})
+
+		add_expense_modal.find(`form`).submit(() => {
+			monto.val(monto.val().replace(`$`, ``).replace(`,`, ``))
 		})
 	});
 </script>
