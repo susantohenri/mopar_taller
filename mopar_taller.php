@@ -94,6 +94,8 @@ function taller_conciliacion_contable_func(){
 	$alert = [];
 
 	if (isset($_POST['add_expense'])) $alert = Mopar::solicitudAddExpense($_POST);
+	if (isset($_POST['rewrite_expense'])) $alert = Mopar::solicitudRewriteExpense($_POST);
+	if (isset($_POST['edit_expense'])) $alert = Mopar::solicitudEditExpense($_POST);
 
 	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
     $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
