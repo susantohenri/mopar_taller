@@ -981,27 +981,41 @@ class Mopar{
 				'proveedor' => $params['proveedor'],
 				'monto' => $params['monto'],
 				'detaile' => $params['detaile'],
+				'tipo_de_documento' => $params['tipo_de_documento'],
 			];
 			$solicitud->expense = json_encode($solicitud->expense);
-
-			switch ($params['tipo_de_documento']) {
-				case 'FACTURA':
-					$solicitud->iva_credito = (int) $solicitud->iva_credito + ((int)$params['monto'] * 0.19);
-					break;
-				case 'BOLETA':
-				case 'SIN COMPROBANTE':
-					$solicitud->gastos = (int) $solicitud->gastos + (int)$params['monto'];
-					break;
-			}
-			global $wpdb;
-			$wpdb->update('solicitud', [
-				'expense' => $solicitud->expense
-				, 'iva_credito' => $solicitud->iva_credito
-				, 'gastos' => $solicitud->gastos
-			], ['id' => $solicitud->id]);
+			Mopar::solicitudCalculateExpense($solicitud);
 			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
 		}
 		return $alert;
+	}
+
+	protected static function solicitudCalculateExpense($solicitud) {
+		global $wpdb;
+		$solicitud->iva_credito = 0;
+		$solicitud->iva_debito = 0;
+		$solicitud->gastos = 0;
+		$solicitud->total = 0;
+		$solicitud->utilidad = 0;
+		foreach (json_decode($solicitud->expense) as $expense) {
+			switch ($expense->tipo_de_documento) {
+				case 'FACTURA':
+					$solicitud->iva_credito = (int) $solicitud->iva_credito + ((int)$expense->monto * 0.19);
+					break;
+				case 'BOLETA':
+				case 'SIN COMPROBANTE':
+					$solicitud->gastos = (int) $solicitud->gastos + (int)$expense->monto;
+					break;
+			}
+		}
+		$wpdb->update('solicitud', [
+			'expense' => $solicitud->expense
+			, 'iva_credito' => $solicitud->iva_credito
+			, 'iva_debito' => $solicitud->iva_debito
+			, 'gastos' => $solicitud->gastos
+			, 'total' => (int) $solicitud->gastos + (int) $solicitud->iva_debito
+			, 'utilidad' => (int) $solicitud->total - (int) $solicitud->iva_debito - (int) $solicitud->gastos + (int) $solicitud->iva_credito
+		], ['id' => $solicitud->id]);
 	}
 
 	public static function getOts(){

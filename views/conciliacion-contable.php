@@ -42,11 +42,11 @@
 						<td><?= date('d-m-Y', strtotime($solicitud->regdate)) ?></td>
 						<td data-cliente="<?php echo $solicitud->cliente_id; ?>"> <?php echo Mopar::getNombreCliente($solicitud->cliente_id, false) ?> </td>
 						<td data-vehiculo="<?php echo $solicitud->vehiculo_id; ?>"> <?php if (0 != $solicitud->vehiculo_id) echo Mopar::getNombreVehiculo($solicitud->vehiculo_id) ?> </td>
-						<td style="text-align: right;">$ <?= $solicitud->total ?></td>
-						<td style="text-align: right;">$ <?= $solicitud->iva_debito ?></td>
-						<td style="text-align: right;">$ <?= $solicitud->iva_credito ?></td>
-						<td style="text-align: right;">$ <?= $solicitud->gastos ?></td>
-						<td style="text-align: right;">$ <?= $solicitud->utilidad ?></td>
+						<td style="text-align: right;">$<?= number_format($solicitud->total, 0) ?></td>
+						<td style="text-align: right;">$<?= number_format($solicitud->iva_debito, 0) ?></td>
+						<td style="text-align: right;">$<?= number_format($solicitud->iva_credito, 0) ?></td>
+						<td style="text-align: right;">$<?= number_format($solicitud->gastos, 0) ?></td>
+						<td style="text-align: right;">$<?= number_format($solicitud->utilidad, 0) ?></td>
 						<td class="text-center" style="white-space: nowrap;">
 							<button class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></button>
 							<button class="btn btn-warning" data-toggle="tooltip"><i class="fa fa-list"></i></button>
