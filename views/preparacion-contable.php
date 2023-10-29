@@ -79,15 +79,15 @@
 								<div class="input-group-prepend">
 									<span class="input-group-text">Monto</span>
 								</div>
-								<input type="text" name="monto" class="form-control" required>
+								<input type="text" name="monto" class="form-control currency" required>
 							</div>
 						</div>
 						<div class="form-group col-md-12">
 							<div class="input-group">
 								<div class="input-group-prepend">
-									<span class="input-group-text">Detaile</span>
+									<span class="input-group-text">detalle</span>
 								</div>
-								<textarea class="form-control" name="detaile" required></textarea>
+								<textarea class="form-control" name="detalle" required></textarea>
 							</div>
 						</div>
 						<div class="form-group col-md-1">
@@ -131,26 +131,7 @@
 									</tr>
 								</thead>
 								<tbody class="bg-light">
-									<tr>
-										<td class="">
-											<input type="text" name="detalle[item][]" class="form-control" required>
-										</td>
-										<td class="">
-											<input type="text" name="detalle[monto][]" class="form-control monto text-right" required>
-										</td>
-										<td>
-											<a class="btn" href=""><i class="fa fa-pencil text-warning"></i></a>
-											<a class="btn btn-danger btn-sm" href=""><i class="fa fa-minus"></i></a>
-											<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-up"></i></a>
-											<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-down"></i></a>
-										</td>
-									</tr>
 								</tbody>
-								<tfoot>
-									<tr>
-										<th colspan="3"><button type="button" class="btn btn-success float-right btn-sm btnPlus" data-toggle="tooltip" title="Agregar linea de detalle"><i class="fa fa-plus"></i></button></th>
-									</tr>
-								</tfoot>
 							</table>
 						</div>
 					</div>
@@ -158,7 +139,7 @@
 				<div class="modal-footer">
 					<input type="hidden" name="solicitud_id">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
-					<button type="submit" class="btn btn-success" name="add_expense">Guardar <i class="fa fa-save"></i> </button>
+					<button type="submit" class="btn btn-success" name="rewrite_expense">Guardar <i class="fa fa-save"></i> </button>
 				</div>
 			</div>
 		</div>
@@ -191,16 +172,25 @@
 
 		const add_expense_modal = $(`#modalAddExpense`)
 		const retrieve_expense_modal = $(`#modalRetrieveExpense`)
-		const monto = $(`[name=monto]`)
-		monto.keyup(() => {
-			var typed = monto.val()
-			typed = typed.replace(`$`, ``).replace(`,`, ``)
-			typed = parseInt(typed)
-			if (isNaN(typed)) typed = 0
-			typed = typed.toString()
-			typed = typed.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-			monto.val(`$${typed}`)
-		})
+
+		function activateCurrencyFormat() {
+			$(`.currency`).each(function() {
+				$(this)
+					.off(`keyup.currency`)
+					.on(`keyup.currency`, function() {
+						var typed = $(this).val()
+						typed = typed.replace(`$`, ``).replace(`,`, ``)
+						typed = parseInt(typed)
+						if (isNaN(typed)) typed = 0
+						typed = typed.toString()
+						typed = typed.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+						$(this).val(`$${typed}`)
+					})
+					.trigger(`keyup.currency`)
+
+			})
+		}
+		activateCurrencyFormat()
 
 		$(`.btn-add-expense`).click(function() {
 			add_expense_modal.find(`[type=text], textarea`).val(``)
@@ -210,14 +200,66 @@
 			add_expense_modal.modal(`show`)
 		})
 
-		add_expense_modal.find(`form`).submit(() => {
-			monto.val(monto.val().replace(`$`, ``).replace(`,`, ``))
+		$(`form`).submit(() => {
+			$(`.currency`).each(function() {
+				$(this).val($(this).val().replace(`$`, ``).replace(`,`, ``))
+			})
+			return true
 		})
 
 		$(`.btn-retrieve-expense`).click(function() {
 			const solicitud_id = $(this).parents(`tr`).attr(`data-regid`)
-			retrieve_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
-			retrieve_expense_modal.modal(`show`)
+			$.ajax({
+				type: 'POST',
+				url: '<?php echo admin_url('admin-ajax.php'); ?>',
+				dataType: 'json',
+				data: 'action=get_solicitud&solicitud_id=' + solicitud_id,
+				beforeSend: function() {
+					$(".overlay").show();
+				},
+				success: function(json) {
+					$(".overlay").hide();
+					retrieve_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
+					json.solicitud.expense = JSON.parse(json.solicitud.expense)
+					console.log(json.solicitud.expense)
+					for (const row of json.solicitud.expense) {
+						retrieve_expense_modal.find(`tbody`).append(`
+							<tr>
+								<td>
+									<input type="hidden" name="expense[proveedor][]" value="${row.proveedor}">
+									<input type="hidden" name="expense[tipo_de_documento][]" value="${row.tipo_de_documento}">
+									<input type="text" name="expense[detalle][]" value="${row.detalle}" class="form-control" required>
+								</td>
+								<td class="">
+									<input type="text" name="expense[monto][]" value="${row.monto}" class="form-control currency text-right" required>
+								</td>
+								<td>
+									<a class="btn" href=""><i class="fa fa-pencil text-warning"></i></a>
+									<a class="btn btn-danger btn-sm" href=""><i class="fa fa-minus"></i></a>
+									<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-up"></i></a>
+									<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-down"></i></a>
+								</td>
+							</tr>
+						`)
+					}
+					activateCurrencyFormat()
+					retrieve_expense_modal.find(`.fa-minus`).parent().click(function(event) {
+						event.preventDefault()
+						$(this).parents(`tr`).remove()
+					})
+					retrieve_expense_modal.find(`.fa-arrow-up`).parent().click(function(event) {
+						event.preventDefault()
+						tr = $(this).closest('tr')
+						tr.insertBefore(tr.prev())
+					})
+					retrieve_expense_modal.find(`.fa-arrow-down`).parent().click(function(event) {
+						event.preventDefault()
+						tr = $(this).closest('tr')
+						tr.insertAfter(tr.next())
+					})
+					retrieve_expense_modal.modal(`show`)
+				}
+			})
 		})
 	});
 </script>
