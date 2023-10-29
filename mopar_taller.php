@@ -74,6 +74,10 @@ function taller_trabajos_realizado_func(){
 
 function taller_preparacion_contable_func(){
 	global $wpdb;
+	$alert = [];
+
+	if (isset($_POST['add_expense'])) $alert = Mopar::solicitudAddExpense($_POST);
+
 	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
     $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
 	$max_year = $wpdb->get_var("SELECT MAX(YEAR(regdate)) FROM solicitud");
@@ -85,6 +89,10 @@ function taller_preparacion_contable_func(){
 
 function taller_conciliacion_contable_func(){
 	global $wpdb;
+	$alert = [];
+
+	if (isset($_POST['add_expense'])) $alert = Mopar::solicitudAddExpense($_POST);
+
 	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
     $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
 	$max_year = $wpdb->get_var("SELECT MAX(YEAR(regdate)) FROM solicitud");
@@ -961,6 +969,39 @@ class Mopar{
 			LEFT JOIN modelos ON vehiculos.modelo_id = modelos.id
 			WHERE solicitud.id = %d
 		", $id));
+	}
+
+	public static function solicitudAddExpense ($params) {
+		$alert = [];
+		$solicitud = Mopar::getOneSolicitud($params['solicitud_id']);
+		if (!$solicitud) $alert = ['type' => 'red', 'content' => 'Error: document not found!'];
+		else {
+			$solicitud->expense = empty($solicitud->expense) ? [] : json_decode($solicitud->expense);
+			$solicitud->expense[] = [
+				'proveedor' => $params['proveedor'],
+				'monto' => $params['monto'],
+				'detaile' => $params['detaile'],
+			];
+			$solicitud->expense = json_encode($solicitud->expense);
+
+			switch ($params['tipo_de_documento']) {
+				case 'FACTURA':
+					$solicitud->iva_credito = (int) $solicitud->iva_credito + ((int)$params['monto'] * 0.19);
+					break;
+				case 'BOLETA':
+				case 'SIN COMPROBANTE':
+					$solicitud->gastos = (int) $solicitud->gastos + (int)$params['monto'];
+					break;
+			}
+			global $wpdb;
+			$wpdb->update('solicitud', [
+				'expense' => $solicitud->expense
+				, 'iva_credito' => $solicitud->iva_credito
+				, 'gastos' => $solicitud->gastos
+			], ['id' => $solicitud->id]);
+			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
+		}
+		return $alert;
 	}
 
 	public static function getOts(){
