@@ -44,7 +44,7 @@
 						<td style="text-align: right;">$<?= number_format($solicitud->gastos, 0) ?></td>
 						<td><?= $solicitud->tipo_de_documento ?></td>
 						<td class="text-center" style="white-space: nowrap;">
-							<button class="btn btn-warning" data-toggle="tooltip"><i class="fa fa-list"></i></button>
+							<button class="btn btn-warning btn-retrieve-expense" data-toggle="tooltip"><i class="fa fa-list"></i></button>
 							<button class="btn btn-success btn-add-expense" data-toggle="tooltip"><i class="fa fa-plus"></i></button>
 						</td>
 					</tr>
@@ -59,7 +59,7 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Agregar Gasto</h5>
+					<h5 class="modal-title">AGREGAR GASTO</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -109,6 +109,62 @@
 	</form>
 </div>
 
+<div class="modal fade" id="modalRetrieveExpense" tabindex="-1" role="dialog" aria-labelledby="retrieveExpenseLabel" aria-hidden="true">
+	<form method="POST">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">GASTOS</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-row">
+						<div class="form-group col-md-12">
+							<table class="table">
+								<thead>
+									<tr>
+										<th> DETALLE </th>
+										<th> MONTO </th>
+										<th></th>
+									</tr>
+								</thead>
+								<tbody class="bg-light">
+									<tr>
+										<td class="">
+											<input type="text" name="detalle[item][]" class="form-control" required>
+										</td>
+										<td class="">
+											<input type="text" name="detalle[monto][]" class="form-control monto text-right" required>
+										</td>
+										<td>
+											<a class="btn" href=""><i class="fa fa-pencil text-warning"></i></a>
+											<a class="btn btn-danger btn-sm" href=""><i class="fa fa-minus"></i></a>
+											<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-up"></i></a>
+											<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-down"></i></a>
+										</td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<th colspan="3"><button type="button" class="btn btn-success float-right btn-sm btnPlus" data-toggle="tooltip" title="Agregar linea de detalle"><i class="fa fa-plus"></i></button></th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="solicitud_id">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
+					<button type="submit" class="btn btn-success" name="add_expense">Guardar <i class="fa fa-save"></i> </button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
 <script>
 	$(document).ready(function() {
 		<?php if (!empty($alert)) : ?>
@@ -134,6 +190,7 @@
 		});
 
 		const add_expense_modal = $(`#modalAddExpense`)
+		const retrieve_expense_modal = $(`#modalRetrieveExpense`)
 		const monto = $(`[name=monto]`)
 		monto.keyup(() => {
 			var typed = monto.val()
@@ -155,6 +212,12 @@
 
 		add_expense_modal.find(`form`).submit(() => {
 			monto.val(monto.val().replace(`$`, ``).replace(`,`, ``))
+		})
+
+		$(`.btn-retrieve-expense`).click(function() {
+			const solicitud_id = $(this).parents(`tr`).attr(`data-regid`)
+			retrieve_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
+			retrieve_expense_modal.modal(`show`)
 		})
 	});
 </script>
