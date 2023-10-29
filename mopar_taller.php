@@ -78,6 +78,7 @@ function taller_preparacion_contable_func(){
 
 	if (isset($_POST['add_expense'])) $alert = Mopar::solicitudAddExpense($_POST);
 	if (isset($_POST['rewrite_expense'])) $alert = Mopar::solicitudRewriteExpense($_POST);
+	if (isset($_POST['edit_expense'])) $alert = Mopar::solicitudEditExpense($_POST);
 
 	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
     $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
@@ -1003,6 +1004,25 @@ class Mopar{
 				'monto' => $params['expense']['monto'][$index],
 				'detalle' => $params['expense']['detalle'][$index],
 				'tipo_de_documento' => $params['expense']['tipo_de_documento'][$index],
+			];
+			$solicitud->expense = json_encode($solicitud->expense);
+			Mopar::solicitudCalculateExpense($solicitud);
+			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
+		}
+		return $alert;
+	}
+
+	public static function solicitudEditExpense ($params) {
+		$alert = [];
+		$solicitud = Mopar::getOneSolicitud($params['solicitud_id']);
+		if (!$solicitud) $alert = ['type' => 'red', 'content' => 'Error: document not found!'];
+		else {
+			$solicitud->expense = json_decode($solicitud->expense);
+			$solicitud->expense[$params['expense_index']] = [
+				'proveedor' => $params['proveedor'],
+				'monto' => $params['monto'],
+				'detalle' => $params['detalle'],
+				'tipo_de_documento' => $params['tipo_de_documento'],
 			];
 			$solicitud->expense = json_encode($solicitud->expense);
 			Mopar::solicitudCalculateExpense($solicitud);

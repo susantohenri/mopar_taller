@@ -44,7 +44,7 @@
 						<td style="text-align: right;">$<?= number_format($solicitud->gastos, 0) ?></td>
 						<td><?= $solicitud->tipo_de_documento ?></td>
 						<td class="text-center" style="white-space: nowrap;">
-							<button class="btn btn-warning btn-retrieve-expense" data-toggle="tooltip"><i class="fa fa-list"></i></button>
+							<button class="btn btn-warning <?= !empty($solicitud->expense) ? 'btn-retrieve-expense' : '' ?>" data-toggle="tooltip"><i class="fa fa-list"></i></button>
 							<button class="btn btn-success btn-add-expense" data-toggle="tooltip"><i class="fa fa-plus"></i></button>
 						</td>
 					</tr>
@@ -146,6 +146,62 @@
 	</form>
 </div>
 
+<div class="modal fade" id="modalEditExpense" tabindex="-1" role="dialog" aria-labelledby="editExpenseLabel" aria-hidden="true">
+	<form method="POST">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">AGREGAR GASTO</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-row">
+						<div class="form-group col-md-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Proveedor</span>
+								</div>
+								<input type="text" name="proveedor" class="form-control" required>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">Monto</span>
+								</div>
+								<input type="text" name="monto" class="form-control currency" required>
+							</div>
+						</div>
+						<div class="form-group col-md-12">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<span class="input-group-text">detalle</span>
+								</div>
+								<textarea class="form-control" name="detalle" required></textarea>
+							</div>
+						</div>
+						<div class="form-group col-md-1">
+						</div>
+						<div class="form-group col-md-11">
+							<?php foreach (['FACTURA', 'BOLETA', 'SIN COMPROBANTE'] as $tipo_de_documento) : ?>
+								<br><input type="radio" name="tipo_de_documento" value="<?= $tipo_de_documento ?>" required><?= $tipo_de_documento ?>
+							<?php endforeach ?>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<input type="hidden" name="solicitud_id">
+					<input type="hidden" name="expense_index">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal"> <i class="fa fa-times"></i> Cerrar y volver</button>
+					<button type="submit" class="btn btn-success" name="edit_expense">Guardar <i class="fa fa-save"></i> </button>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
 <script>
 	$(document).ready(function() {
 		<?php if (!empty($alert)) : ?>
@@ -172,6 +228,7 @@
 
 		const add_expense_modal = $(`#modalAddExpense`)
 		const retrieve_expense_modal = $(`#modalRetrieveExpense`)
+		const edit_expense_modal = $(`#modalEditExpense`)
 
 		function activateCurrencyFormat() {
 			$(`.currency`).each(function() {
@@ -196,7 +253,7 @@
 			add_expense_modal.find(`[type=text], textarea`).val(``)
 			add_expense_modal.find(`[type=radio]`).prop(`checked`, false)
 			const solicitud_id = $(this).parents(`tr`).attr(`data-regid`)
-			add_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
+			add_expense_modal.find(`[name="solicitud_id"]`).val(solicitud_id)
 			add_expense_modal.modal(`show`)
 		})
 
@@ -219,10 +276,11 @@
 				},
 				success: function(json) {
 					$(".overlay").hide();
-					retrieve_expense_modal.find(` [name = solicitud_id] `).val(solicitud_id)
+					retrieve_expense_modal.find(`[name="solicitud_id"]`).val(solicitud_id)
 					json.solicitud.expense = JSON.parse(json.solicitud.expense)
-					console.log(json.solicitud.expense)
-					for (const row of json.solicitud.expense) {
+					retrieve_expense_modal.find(`tbody`).html(``)
+					for (var index in json.solicitud.expense) {
+						const row = json.solicitud.expense[index]
 						retrieve_expense_modal.find(`tbody`).append(`
 							<tr>
 								<td>
@@ -234,7 +292,7 @@
 									<input type="text" name="expense[monto][]" value="${row.monto}" class="form-control currency text-right" required>
 								</td>
 								<td>
-									<a class="btn" href=""><i class="fa fa-pencil text-warning"></i></a>
+									<a class="btn" href="" data-expense-index="${index}"><i class="fa fa-pencil text-warning"></i></a>
 									<a class="btn btn-danger btn-sm" href=""><i class="fa fa-minus"></i></a>
 									<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-up"></i></a>
 									<a class="btn btn-info btn-sm" href=""><i class="fa fa-arrow-down"></i></a>
@@ -256,6 +314,17 @@
 						event.preventDefault()
 						tr = $(this).closest('tr')
 						tr.insertAfter(tr.next())
+					})
+					retrieve_expense_modal.find(`.fa-pencil`).parent().click(function(event) {
+						event.preventDefault()
+						const index = $(this).attr(`data-expense-index`)
+						edit_expense_modal.find(`[name="proveedor"]`).val(json.solicitud.expense[index].proveedor)
+						edit_expense_modal.find(`[name="monto"]`).val(json.solicitud.expense[index].monto).trigger(`keyup`)
+						edit_expense_modal.find(`[name="detalle"]`).val(json.solicitud.expense[index].detalle)
+						edit_expense_modal.find(`[name="tipo_de_documento"][value="${json.solicitud.expense[index].tipo_de_documento}"]`).prop(`checked`, true)
+						edit_expense_modal.find(`[name="solicitud_id"]`).val(solicitud_id)
+						edit_expense_modal.find(`[name="expense_index"]`).val(index)
+						edit_expense_modal.modal(`show`)
 					})
 					retrieve_expense_modal.modal(`show`)
 				}
