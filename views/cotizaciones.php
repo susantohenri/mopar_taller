@@ -471,10 +471,10 @@ if ($_POST) {
 			tr = $(this).closest('tr');
 			tr.fadeOut(300, function() {
 				tr.remove();
+				recalcular();
 			})
 			$("[data-toggle=tooltip]").tooltip();
 			$('.tooltip').hide();
-			recalcular();
 		})
 
 		$(document).on('click', '.btnUp', function(e) {
