@@ -60,6 +60,7 @@ if ($_POST) {
 		if ($before_update !== $array_insert) $array_insert['upddate'] = date('Y-m-d H:i:s');
 
 		if ($wpdb->update('ot', $array_insert, ['id' => $_POST['ot_id']])) {
+			Mopar::solicitudCalculateSelling($_POST['ot_id']);
 			$updated = true;
 		}
 	}

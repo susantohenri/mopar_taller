@@ -864,6 +864,7 @@ class Mopar{
 			2) Ordenes de ingreso without a cotización (2)
 			3) trabajos realizados that have not been delivered to their owners yet (5 && !entragar)
 		*/
+		Mopar::solicitudUpdateTotalOldRecord();
 		global $wpdb;
 		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
@@ -886,6 +887,7 @@ class Mopar{
 
 	public static function ConciliacionContable($month, $year){
 		// 1) trabajos realizados that have been delivered to their owners
+		Mopar::solicitudUpdateTotalOldRecord();
 		global $wpdb;
 		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
@@ -988,7 +990,7 @@ class Mopar{
 				'tipo_de_documento' => $params['tipo_de_documento'],
 			];
 			$solicitud->expense = json_encode($solicitud->expense);
-			Mopar::solicitudCalculateExpense($solicitud);
+			Mopar::solicitudCalculateBuying($solicitud);
 			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
 		}
 		return $alert;
@@ -1008,7 +1010,7 @@ class Mopar{
 				'tipo_de_documento' => $params['expense']['tipo_de_documento'][$index],
 			];
 			$solicitud->expense = json_encode($solicitud->expense);
-			Mopar::solicitudCalculateExpense($solicitud);
+			Mopar::solicitudCalculateBuying($solicitud);
 			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
 		}
 		return $alert;
@@ -1027,24 +1029,21 @@ class Mopar{
 				'tipo_de_documento' => $params['tipo_de_documento'],
 			];
 			$solicitud->expense = json_encode($solicitud->expense);
-			Mopar::solicitudCalculateExpense($solicitud);
+			Mopar::solicitudCalculateBuying($solicitud);
 			$alert = ['type' => 'green', 'content' => 'Success: expense sucessfully added!'];
 		}
 		return $alert;
 	}
 
-	protected static function solicitudCalculateExpense($solicitud) {
+	protected static function solicitudCalculateBuying($solicitud) {
 		global $wpdb;
 		$solicitud->iva_credito = 0;
-		$solicitud->iva_debito = 0;
 		$solicitud->gastos = 0;
-		$solicitud->total = 0;
 		$solicitud->utilidad = 0;
 		foreach (json_decode($solicitud->expense) as $expense) {
 			switch ($expense->tipo_de_documento) {
 				case 'FACTURA':
 					$solicitud->iva_credito = (int) $solicitud->iva_credito + ((int)$expense->monto * 0.19);
-					break;
 				case 'BOLETA':
 				case 'SIN COMPROBANTE':
 					$solicitud->gastos = (int) $solicitud->gastos + (int)$expense->monto;
@@ -1054,11 +1053,34 @@ class Mopar{
 		$wpdb->update('solicitud', [
 			'expense' => $solicitud->expense
 			, 'iva_credito' => $solicitud->iva_credito
-			, 'iva_debito' => $solicitud->iva_debito
 			, 'gastos' => $solicitud->gastos
-			, 'total' => (int) $solicitud->gastos + (int) $solicitud->iva_debito
 			, 'utilidad' => (int) $solicitud->total - (int) $solicitud->iva_debito - (int) $solicitud->gastos + (int) $solicitud->iva_credito
 		], ['id' => $solicitud->id]);
+	}
+
+	protected static function solicitudUpdateTotalOldRecord() {
+		global $wpdb;
+		$empty_detalle = '{"item":[""],"precio":["0"]}';
+		$uncalculateds = $wpdb->get_results("
+			SELECT
+				solicitud.ot_id
+			FROM solicitud
+			LEFT JOIN ot ON solicitud.ot_id = ot.id
+			WHERE solicitud.total < 1 AND ot.detalle <> '{$empty_detalle}';
+		");
+		foreach ($uncalculateds as $solicitud) Mopar::solicitudCalculateSelling($solicitud->ot_id);
+	}
+
+	public static function solicitudCalculateSelling($ot_id) {
+		$solicitud = Mopar::getOneSolicitudByOtId($ot_id);
+		if (!$solicitud) return false;
+		$ot = Mopar::getOneOt($ot_id);
+		if (!$ot) return false;
+		$detalle = json_decode($ot->detalle);
+		$total = (int) 0;
+		foreach ($detalle->precio as $precio) $total += (int) $precio;
+		global $wpdb;
+		$wpdb->update('solicitud', ['total' => $total, 'iva_debito' => 0.19 * $total], ['id' => $solicitud->id]);
 	}
 
 	public static function getOts(){
@@ -1155,7 +1177,7 @@ class Mopar{
         	case 2: $estado = 'Orden de Ingreso'; break;
         	case 3: $estado = 'Cotización without Ingreso'; break;
         	case 4: $estado = 'Cotización with Ingreso'; break;
-        	case 5: $estado = 'Trabajo NO Realizado'; break;
+			case 5: $estado = 'Trabajo Realizado'; break;
 			default: $estado = ''; break;
 		}
 
