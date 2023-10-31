@@ -864,7 +864,7 @@ class Mopar{
 			2) Ordenes de ingreso without a cotización (2)
 			3) trabajos realizados that have not been delivered to their owners yet (5 && !entragar)
 		*/
-		Mopar::solicitudUpdateTotalOldRecord();
+		//Mopar::solicitudUpdateTotalOldRecord();
 		global $wpdb;
 		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
@@ -887,7 +887,7 @@ class Mopar{
 
 	public static function ConciliacionContable($month, $year){
 		// 1) trabajos realizados that have been delivered to their owners
-		Mopar::solicitudUpdateTotalOldRecord();
+		//Mopar::solicitudUpdateTotalOldRecord();
 		global $wpdb;
 		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
