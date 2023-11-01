@@ -98,8 +98,8 @@ function taller_conciliacion_contable_func(){
 	if (isset($_POST['edit_expense'])) $alert = Mopar::solicitudEditExpense($_POST);
 
 	$filter_month = isset($_POST['filter_month']) && !isset($_POST['filter_reset']) ? $_POST['filter_month'] : date('m', time());
-    $min_year = $wpdb->get_var("SELECT MIN(YEAR(regdate)) FROM solicitud");
-	$max_year = $wpdb->get_var("SELECT MAX(YEAR(regdate)) FROM solicitud");
+    $min_year = $wpdb->get_var("SELECT MIN(YEAR(entregardate)) FROM ot");
+	$max_year = $wpdb->get_var("SELECT MAX(YEAR(entregardate)) FROM ot");
 	$filter_year = isset($_POST['filter_year']) && !isset($_POST['filter_reset']) ? $_POST['filter_year'] : date('Y', time());
 
     $solicituds = Mopar::ConciliacionContable($filter_month, $filter_year);
@@ -363,7 +363,7 @@ function eliminar_solicitud_callback(){
 
 function completar_realizados_callback(){
 	global $wpdb;
-	$wpdb->update('ot', ['entregar' => 1], ['id' => $_POST['regid']]);
+	$wpdb->update('ot', ['entregar' => 1, 'entregardate' => date('Y-m-d')], ['id' => $_POST['regid']]);
 	Mopar::sendMail($_POST['regid'], 'entregar_created');
 	$json = [
 		'status' => 'OK'
@@ -892,10 +892,11 @@ class Mopar{
 		$solicituds = $wpdb->get_results($wpdb->prepare("
 			SELECT
 				solicitud.*
+				, ot.entregardate
 			FROM solicitud
 			LEFT JOIN ot ON solicitud.ot_id = ot.id
 			WHERE (solicitud.estado = 5 AND 1 = ot.entregar)
-			AND MONTH(solicitud.regdate) = %d AND YEAR(solicitud.regdate) = %d
+			AND MONTH(ot.entregardate) = %d AND YEAR(ot.entregardate) = %d
 			ORDER BY id DESC
 		", $month, $year));
 
