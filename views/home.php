@@ -1,5 +1,4 @@
 <?php include 'header.php'; ?>
-
 <style type="text/css">
 	.botonera {
 		margin-bottom: 10px;

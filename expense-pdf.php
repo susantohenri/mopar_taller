@@ -32,12 +32,12 @@ $html = "
 			<tbody>
                 <tr>
                     <td style='width: 590px;font-size: 32px; text-align: center;'>
-                        <u>Conciliaci√≥n Contable</u>
+                        <u>Conciliaci®Æn Contable</u>
                     </td>
                 </tr>
 				<tr>
 					<td style='width: 590px;text-align: center;font-size: 20px;'>
-						<b>TRABAJO N¬∞ 000{$solicitud->id}</b>
+						<b>TRABAJO N°„ 000{$solicitud->id}</b>
 					</td>
 				</tr>
 			</tbody>
@@ -154,4 +154,4 @@ $html = "
 require_once('html2pdf/html2pdf.class.php');
 $html2pdf = new HTML2PDF($orientation, 'LETTER', 'es');
 $html2pdf->WriteHTML($html);
-$html2pdf->Output('Conciliaci√≥n_000' . $solicitud->id . '.pdf');
+$html2pdf->Output('Conciliaci®Æn_000' . $solicitud->id . '.pdf');
