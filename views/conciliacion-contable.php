@@ -48,7 +48,7 @@
 						<td style="text-align: right;">$<?= number_format($solicitud->gastos, 0) ?></td>
 						<td style="text-align: right;">$<?= number_format($solicitud->utilidad, 0) ?></td>
 						<td class="text-center" style="white-space: nowrap;">
-							<button class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></button>
+							<a target="_blank" href="<?= site_url("wp-content/plugins/mopar_taller/expense-pdf.php?id={$solicitud->id}") ?>" class="btn btn-info" data-toggle="tooltip" title="Ver"><i class="fa fa-search"></i></a>
 							<button class="btn btn-warning <?= !empty($solicitud->expense) ? 'btn-retrieve-expense' : '' ?>" data-toggle="tooltip"><i class="fa fa-list"></i></button>
 							<button class="btn btn-success btn-add-expense" data-toggle="tooltip"><i class="fa fa-plus"></i></button>
 						</td>
