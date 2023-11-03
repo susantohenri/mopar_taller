@@ -9,17 +9,17 @@ foreach (json_decode($solicitud->expense) as $expense) {
     $expense->monto = number_format($expense->monto, 0);
     $expenses .= "
         <tr>
-            <td style='width: 295px; border: 1px solid black'>
-                <center>{$expense->proveedor}</center>
+            <td style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                {$expense->proveedor}
             </td>
-            <td style='width: 295px; border: 1px solid black'>
-                <center>$ {$expense->monto}</center>
+            <td style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                $ {$expense->monto}
             </td>
-            <td style='width: 295px; border: 1px solid black'>
-                <center>{$expense->tipo_de_documento}</center>
+            <td style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                {$expense->tipo_de_documento}
             </td>
-            <td style='width: 295px; border: 1px solid black'>
-                <center>{$expense->detalle}</center>
+            <td style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                {$expense->detalle}
             </td>
         </tr>
     ";
@@ -31,8 +31,8 @@ $html = "
 		<table style='width: 590px;'>
 			<tbody>
                 <tr>
-                    <td style='width: 590px;font-size: 32px;'>
-                        <center><u>Conciliación Contable</u></center>
+                    <td style='width: 590px;font-size: 32px; text-align: center;'>
+                        <u>Conciliación Contable</u>
                     </td>
                 </tr>
 				<tr>
@@ -53,19 +53,19 @@ $html = "
 		<table style='width: 590px; border-collapse: collapse'>
 			<tbody>
                 <tr>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>VALOR TOTAL</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>VALOR TOTAL</b>
                     </td>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>$ {$solicitud->total}</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>$ {$solicitud->total}</b>
                     </td>
                 </tr>
                 <tr>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>IVA DEBITO</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>IVA DEBITO</b>
                     </td>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>$ {$solicitud->iva_debito}</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>$ {$solicitud->iva_debito}</b>
                     </td>
                 </tr>
 			</tbody>
@@ -81,17 +81,17 @@ $html = "
 		<table style='width: 590px; border-collapse: collapse'>
             <thead>
                 <tr>
-                    <th style='width: 295px; border: 1px solid black'>
-                        <b><center>PROVEEDOR</center></b>
+                    <th style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                        <b>PROVEEDOR</b>
                     </th>
-                    <th style='width: 295px; border: 1px solid black'>
-                        <b><center>MONTO</center></b>
+                    <th style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                        <b>MONTO</b>
                     </th>
-                    <th style='width: 295px; border: 1px solid black'>
-                        <b><center>TIPO DE DOCUMENTO</center></b>
+                    <th style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                        <b>TIPO DE DOCUMENTO</b>
                     </th>
-                    <th style='width: 295px; border: 1px solid black'>
-                        <b><center>DETALLE</center></b>
+                    <th style='width: 144.5px; border: 1px solid black; text-align: center;'>
+                        <b>DETALLE</b>
                     </th>
                 </tr>
             </thead>
@@ -110,19 +110,19 @@ $html = "
 		<table style='width: 590px; border-collapse: collapse'>
 			<tbody>
                 <tr>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>TOTAL GASTOS</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>TOTAL GASTOS</b>
                     </td>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>$ {$solicitud->gastos}</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>$ {$solicitud->gastos}</b>
                     </td>
                 </tr>
                 <tr>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>IVA CREDITO</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>IVA CREDITO</b>
                     </td>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>$ {$solicitud->iva_credito}</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>$ {$solicitud->iva_credito}</b>
                     </td>
                 </tr>
 			</tbody>
@@ -138,11 +138,11 @@ $html = "
 		<table style='width: 590px; border-collapse: collapse'>
 			<tbody>
                 <tr>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>RESULTADO</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>RESULTADO</b>
                     </td>
-                    <td style='width: 295px; border: 1px solid black'>
-                        <b><center>$ {$solicitud->utilidad}</center></b>
+                    <td style='width: 295px; border: 1px solid black; text-align: center;'>
+                        <b>$ {$solicitud->utilidad}</b>
                     </td>
                 </tr>
 			</tbody>
