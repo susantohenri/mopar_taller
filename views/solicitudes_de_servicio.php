@@ -8,11 +8,11 @@ if ($_POST) {
 	if (in_array($_POST['action'], ['insertar_solicitud', 'editar_solicitud'])) $array_insert = [
 		'cliente_id' => $_POST['cliente'],
 		'vehiculo_id' => $_POST['vehiculo'],
-		'estado' => 1,
 		'solicitud' => $_POST['solicitud']
 	];
 
 	if ($_POST['action'] == 'insertar_solicitud') {
+		$array_insert['estado'] = 1;
 		if ($wpdb->insert('solicitud', $array_insert)) {
 			$inserted = true;
 		}
