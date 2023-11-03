@@ -128,6 +128,18 @@ if ($_POST) {
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		<br>
+		<ul>
+			<li>
+				<i class="fa fa-circle text-success"></i> El trabajo de esta cotización ha sido completado
+			</li>
+			<li>
+				<i class="fa fa-circle text-warning"></i> Esta cotización no tiene una orden de ingreso
+			</li>
+			<li>
+				<i class="fa fa-circle text-danger"></i> En esta cotización no se ha realizado un trabajo
+			</li>
+		</ul>
 	</div>
 </div>
 

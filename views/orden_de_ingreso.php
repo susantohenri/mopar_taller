@@ -64,6 +64,15 @@ if ($_POST) {
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		<br>
+		<ul>
+			<li>
+				<i class="fa fa-circle text-success"></i> Trabajo completado
+			</li>
+			<li>
+				<i class="fa fa-circle text-danger"></i> Trabajo en curso
+			</li>
+		</ul>
 	</div>
 </div>
 

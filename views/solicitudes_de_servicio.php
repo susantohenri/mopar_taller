@@ -123,6 +123,24 @@ if ($_POST) {
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		<br>
+		<ul>
+			<li>
+				<i class="fa fa-check text-success"></i> Cliente agendado, no registra ingreso
+			</li>
+			<li>
+				<i class="fa fa-times text-danger"></i> La solicitud ha sido declarada como perdida o rechazada
+			</li>
+			<li>
+				<i class="fa fa-circle text-success"></i> Hay una orden de ingreso para esta solicitud o el trabajo ha sido completado
+			</li>
+			<li>
+				<i class="fa fa-circle text-warning"></i> Hay una cotización para esta orden de ingreso, no registra ingreso
+			</li>
+			<li>
+				<i class="fa fa-circle text-danger"></i> No hay acciones para esta solicitud
+			</li>
+		</ul>
 	</div>
 </div>
 

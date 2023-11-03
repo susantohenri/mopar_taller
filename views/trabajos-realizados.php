@@ -119,6 +119,15 @@ if( $_POST ){
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		<br>
+		<ul>
+			<li>
+				<i class="fa fa-circle text-success"></i> Vehículo entregado
+			</li>
+			<li>
+				<i class="fa fa-circle text-danger"></i> Vehiculo no entregado
+			</li>
+		</ul>
 	</div>
 </div>
 
