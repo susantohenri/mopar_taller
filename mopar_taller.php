@@ -450,7 +450,10 @@ function completar_solicitud_callback(){
 
 function uncompletar_solicitud_callback(){
 	global $wpdb;
-	$wpdb->update('solicitud', ['estado' => 1], ['id' => $_POST['regid']]);
+	$solicitud = Mopar::getOneSolicitud($_POST['regid']);
+	if (2 == $solicitud->estado) $solicitud->estado = 1;// orden de ingreso, green to red
+	else if (4 == $solicitud->estado) $solicitud->estado = 3;// cotization with orden de ingreso, green to yellow
+	$wpdb->update('solicitud', ['estado' => $solicitud->estado], ['id' => $_POST['regid']]);
 	$json = [
 		'status' => 'OK'
 	];
@@ -463,18 +466,21 @@ function proceed_solicitud_callback(){
 	global $wpdb;
 	$solicitud = Mopar::getOneSolicitud($_POST['regid']);
 
-	$wpdb->insert('ot', [
-		'cliente_id' => $solicitud->cliente_id,
-		'vehiculo_id' => $solicitud->vehiculo_id,
-		'titulo' => '',
-		'detalle' => '{"item":[""],"precio":["0"]}',
-		'valor' => '',
-		'km' => '',
-		'estado' => 1,
-		'observaciones' => ''
-	]);
+	if ($solicitud->ot_id) $wpdb->update('solicitud', ['estado' => 4], ['id' => $_POST['regid']]);
+	else {
+		$wpdb->insert('ot', [
+			'cliente_id' => $solicitud->cliente_id,
+			'vehiculo_id' => $solicitud->vehiculo_id,
+			'titulo' => '',
+			'detalle' => '{"item":[""],"precio":["0"]}',
+			'valor' => '',
+			'km' => '',
+			'estado' => 1,
+			'observaciones' => ''
+		]);
+		$wpdb->update('solicitud', ['estado' => 4, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
 
-	$wpdb->update('solicitud', ['estado' => 4, 'ot_id' => $wpdb->insert_id], ['id' => $_POST['regid']]);
+	}
 
 	$json = [
 		'status' => 'OK'
